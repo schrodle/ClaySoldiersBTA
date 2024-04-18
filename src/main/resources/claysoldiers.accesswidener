@@ -1,0 +1,8 @@
+accessWidener	v1	named
+
+accessible field net/minecraft/src/Entity fallDistance F
+accessible field net/minecraft/src/Entity rand Ljava/util/Random;
+accessible field net/minecraft/src/EntityCreature entityToAttack Lnet/minecraft/src/Entity;
+accessible field net/minecraft/src/EntityLiving isJumping Z
+accessible field net/minecraft/src/EntityLiving moveForward F
+accessible field net/minecraft/src/EntityLiving moveStrafing F

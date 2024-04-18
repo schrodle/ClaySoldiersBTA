@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "id": "examplemod",
-  "version": "${version}",
+  "id": "claysoldiers",
+  "version": "2.0.0-7.1",
 
-  "name": "Example Mod",
-  "description": "This mod aims to help new BTA modders.",
+  "name": "Clay Soldiers",
+  "description": "Port of Clay Soldiers to BTA!. Add clay soldiers that fight for their color.",
   "authors": [
-    "Turnip Labs"
+    "ClickNin, Useless, RasVHW"
   ],
   "contact": {
     "homepage": "",
@@ -19,21 +19,23 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-			"turniplabs.examplemod.ExampleMod"
+			"rasvhw.claysoldiers.ClaySoldiers"
     ],
 		"beforeGameStart": [
-			"turniplabs.examplemod.ExampleMod"
+			"rasvhw.claysoldiers.ClaySoldiers"
 		],
 		"afterGameStart": [
-			"turniplabs.examplemod.ExampleMod"
+			"rasvhw.claysoldiers.ClaySoldiers"
 		],
 		"recipesReady": [
-			"turniplabs.examplemod.ExampleMod"
+			"rasvhw.claysoldiers.ClaySoldiers"
 		]
 	},
   "mixins": [
-      "examplemod.mixins.json"
+      "claysoldiers.mixins.json"
   ],
+
+	"accessWidener": "claysoldiers.accesswidener",
 
   "depends": {
 		"minecraft": "7.1",
