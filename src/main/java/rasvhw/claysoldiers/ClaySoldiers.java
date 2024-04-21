@@ -131,5 +131,7 @@ public class ClaySoldiers implements ModInitializer, GameStartEntrypoint, Recipe
 			.addInput(new ItemStack(greyDoll,1))
 			.addInput(new ItemStack(Item.dye,1,5))
 			.create("purple_soldier",new ItemStack(purpleDoll,1));
+
+		RecipeBuilder.initNameSpace(MOD_ID);
 	}
 }
