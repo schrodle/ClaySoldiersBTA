@@ -63,7 +63,7 @@ public class EntityClayMan extends EntityAnimal {
     public EntityClayMan(World world) {
         super(world);
         this.setHealthRaw(20);
-        this.clayTeam = 0;
+        this.clayTeam = -1;
         this.heightOffset = 0.0F;
         this.footSize = 0.1F;
         this.moveSpeed = 0.3F;
@@ -93,53 +93,117 @@ public class EntityClayMan extends EntityAnimal {
     public String clayManTexture(int i) {
         String base = "/assets/claysoldiers/entity/clay_";
         if (i == 0) {
-            base = base + "grey";
+            base = base + "black";
         } else if (i == 1) {
             base = base + "red";
         } else if (i == 2) {
-            base = base + "yellow";
-        } else if (i == 3) {
-            base = base + "green";
+			base = base + "green";
+		}else if(i==3){
+			base=base+"brown";
         } else if (i == 4) {
             base = base + "blue";
-        } else if (i == 5) {
-            base = base + "orange";
+		} else if (i == 5) {
+			base = base + "purple";
+		}else if(i==6) {
+			base = base + "cyan";
+		}else if(i==7) {
+			base = base + "lightGray";
+		}else if(i==8) {
+			base = base + "gray";
+		}else if(i==9) {
+			base = base + "pink";
+		}else if(i==10){
+			base=base+"lime";
+		} else if (i == 11) {
+			base = base + "yellow";
+		}else if(i==12) {
+			base = base + "lightBlue";
+		}else if(i==13){
+			base+="magenta";
+        } else if (i == 14) {
+			base = base + "orange";
+		}else if(i==15){
+			base+="white";
         } else {
-            base = base + "purple";
-        }
+			base=base+"grey";
+		}
         return base + ".png";
     }
 
-    public int teamCloth(int teamNum) {
-        if (teamNum == 0) {
-            return 8;
-        } else if (teamNum == 1) {
-            return 14;
-        } else if (teamNum == 2) {
-            return 4;
-        } else if (teamNum == 3) {
-            return 13;
-        } else if (teamNum == 4) {
-            return 11;
-        } else {
-            return teamNum == 5 ? 1 : 10;
-        }
+    public int teamCloth(int teamNum) { //returns the appropriate wool metastate per team
+        if(teamNum==0){
+			return 15;
+		}else if(teamNum==1){
+			return 14;
+		}else if(teamNum==2){
+			return 13;
+		}else if(teamNum==3){
+			return 12;
+		}else if(teamNum==4){
+			return 11;
+		}else if(teamNum==5){
+			return 10;
+		}else if(teamNum==6){
+			return 9;
+		}else if(teamNum==7){
+			return 8;
+		}else if(teamNum==8){
+			return 7;
+		}else if(teamNum==9){
+			return 6;
+		}else if(teamNum==10){
+			return 5;
+		}else if(teamNum==11){
+			return 4;
+		}else if(teamNum==12){
+			return 3;
+		}else if(teamNum==13){
+			return 2;
+		}else if(teamNum==14){
+			return 1;
+		}else if(teamNum==15){
+			return 0;
+		}else{
+			return 7;
+		}
     }
 
-    public int teamDye(int teamNum) {
+    public int teamDye(int teamNum) { //returns the dye metastate for each team
         if (teamNum == 0) {
-            return 8;
+            return 0;
         } else if (teamNum == 1) {
             return 1;
-        } else if (teamNum == 2) {
-            return 11;
-        } else if (teamNum == 3) {
-            return 2;
-        } else if (teamNum == 4) {
-            return 4;
-        } else {
-            return teamNum == 5 ? 14 : 5;
-        }
+		} else if (teamNum == 2) {
+			return 2;
+		}else if(teamNum==3){
+			return 3;
+		} else if (teamNum == 4) {
+			return 4;
+		} else if(teamNum==5) {
+			return 5;
+		} else if(teamNum==6) {
+			return 6;
+		}else if(teamNum==7) {
+			return 7;
+		}else if(teamNum==8) {
+			return 8;
+		}else if(teamNum==9) {
+			return 9;
+		}else if(teamNum==10){
+			return 10;
+        } else if (teamNum == 11) {
+			return 11;
+		}else if(teamNum==12) {
+			return 12;
+		}else if(teamNum==13) {
+			return 13;
+		}else if(teamNum==14) {
+			return 14;
+		}else if(teamNum==15){
+			return 15;
+		}else{
+			return 8;
+		}
     }
 
     @Override
@@ -512,22 +576,42 @@ public class EntityClayMan extends EntityAnimal {
 
                                     this.targetFollow = null;
                                 } else if(itemStack16.getItem() != null && itemStack16.getItem() instanceof ItemClayMan) {
-                                    this.swingArm();
-                                    this.world.playSoundAtEntity(entityItem15, this, "step.gravel", 0.8F, ((this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F) * 0.9F);
-                                    Item item34 = ClaySoldiers.greyDoll;
-                                    if(this.clayTeam == 1) {
+									this.swingArm();
+									this.world.playSoundAtEntity(entityItem15, this, "step.gravel", 0.8F, ((this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F) * 0.9F);
+									Item item34 = ClaySoldiers.greyDoll;
+									if(this.clayTeam==0){
+										item34=ClaySoldiers.blackDoll;
+									}else if(this.clayTeam == 1) {
                                         item34 = ClaySoldiers.redDoll;
                                     } else if(this.clayTeam == 2) {
-                                        item34 = ClaySoldiers.yellowDoll;
-                                    } else if(this.clayTeam == 3) {
-                                        item34 = ClaySoldiers.greenDoll;
+										item34 = ClaySoldiers.greenDoll;
+									}else if(this.clayTeam==3){
+										item34=ClaySoldiers.brownDoll;
                                     } else if(this.clayTeam == 4) {
                                         item34 = ClaySoldiers.blueDoll;
                                     } else if(this.clayTeam == 5) {
+										item34 = ClaySoldiers.purpleDoll;
+									}else if(this.clayTeam==6) {
+										item34 = ClaySoldiers.cyanDoll;
+									}else if(this.clayTeam==7) {
+										item34 = ClaySoldiers.lightGrayDoll;
+									}else if(this.clayTeam==8) {
+										item34 = ClaySoldiers.grayDoll;
+									}else if(this.clayTeam==9) {
+										item34 = ClaySoldiers.pinkDoll;
+									}else if(this.clayTeam==10){
+										item34=ClaySoldiers.limeDoll;
+                                    } else if(this.clayTeam == 11) {
+										item34 = ClaySoldiers.yellowDoll;
+									}else if(this.clayTeam==12) {
+										item34 = ClaySoldiers.lightBlueDoll;
+									}else if(this.clayTeam==13){
+										item34=ClaySoldiers.magentaDoll;
+                                    } else if(this.clayTeam == 14) {
                                         item34 = ClaySoldiers.orangeDoll;
-                                    } else if(this.clayTeam == 6) {
-                                        item34 = ClaySoldiers.purpleDoll;
-                                    }
+                                    }else if(this.clayTeam==15){
+										item34=ClaySoldiers.whiteDoll;
+									}
 
                                     for(int i26 = 0; i26 < 18; ++i26) {
                                         a = this.x + (double)(this.random.nextFloat() - this.random.nextFloat()) * 0.125D;
@@ -897,19 +981,39 @@ public class EntityClayMan extends EntityAnimal {
                                     if(arrived) {
                                         this.swingArm();
                                         Item item1 = ClaySoldiers.greyDoll;
-                                        if(this.clayTeam == 1) {
+										if(this.clayTeam==0){
+											item1=ClaySoldiers.blackDoll;
+										}else if(this.clayTeam == 1) {
                                             item1 = ClaySoldiers.redDoll;
                                         } else if(this.clayTeam == 2) {
-                                            item1 = ClaySoldiers.yellowDoll;
-                                        } else if(this.clayTeam == 3) {
-                                            item1 = ClaySoldiers.greenDoll;
+											item1 = ClaySoldiers.greenDoll;
+										}else if(this.clayTeam==3){
+											item1=ClaySoldiers.brownDoll;
                                         } else if(this.clayTeam == 4) {
                                             item1 = ClaySoldiers.blueDoll;
                                         } else if(this.clayTeam == 5) {
+											item1 = ClaySoldiers.purpleDoll;
+										}else if(this.clayTeam==6) {
+											item1 = ClaySoldiers.cyanDoll;
+										}else if(this.clayTeam==7) {
+											item1 = ClaySoldiers.lightGrayDoll;
+										} else if (this.clayTeam == 8) {
+											item1=ClaySoldiers.grayDoll;
+										}else if(this.clayTeam==9) {
+											item1 = ClaySoldiers.pinkDoll;
+										}else if(this.clayTeam==10){
+											item1=ClaySoldiers.limeDoll;
+                                        } else if(this.clayTeam == 11) {
+											item1 = ClaySoldiers.yellowDoll;
+										}else if(this.clayTeam==12) {
+											item1 = ClaySoldiers.lightBlueDoll;
+										} else if (this.clayTeam == 13) {
+											item1=ClaySoldiers.magentaDoll;
+                                        } else if(this.clayTeam == 14) {
                                             item1 = ClaySoldiers.orangeDoll;
-                                        } else if(this.clayTeam == 6) {
-                                            item1 = ClaySoldiers.purpleDoll;
-                                        }
+                                        }else if(this.clayTeam==15){
+											item1=ClaySoldiers.whiteDoll;
+										}
 
                                         for(a = 0; a < 18; ++a) {
                                             a1 = this.x + (double)(this.random.nextFloat() - this.random.nextFloat()) * 0.125D;
@@ -1420,19 +1524,39 @@ public class EntityClayMan extends EntityAnimal {
     public void dropFewItems() {
         if(!this.gunPowdered) {
             Item item1 = ClaySoldiers.greyDoll;
-            if(this.clayTeam == 1) {
+			if(this.clayTeam==0){
+				item1=ClaySoldiers.blackDoll;
+			}else if(this.clayTeam == 1) {
                 item1 = ClaySoldiers.redDoll;
             } else if(this.clayTeam == 2) {
-                item1 = ClaySoldiers.yellowDoll;
-            } else if(this.clayTeam == 3) {
-                item1 = ClaySoldiers.greenDoll;
+				item1 = ClaySoldiers.greenDoll;
+			}else if(this.clayTeam==3){
+				item1=ClaySoldiers.brownDoll;
             } else if(this.clayTeam == 4) {
                 item1 = ClaySoldiers.blueDoll;
             } else if(this.clayTeam == 5) {
+				item1 = ClaySoldiers.purpleDoll;
+			}else if(this.clayTeam==6) {
+				item1 = ClaySoldiers.cyanDoll;
+			}else if(this.clayTeam==7) {
+				item1 = ClaySoldiers.lightGrayDoll;
+			}else if(this.clayTeam==8) {
+				item1 = ClaySoldiers.grayDoll;
+			}else if(this.clayTeam==9) {
+				item1 = ClaySoldiers.pinkDoll;
+			}else if(this.clayTeam==10){
+				item1=ClaySoldiers.limeDoll;
+            } else if(this.clayTeam == 11) {
+				item1 = ClaySoldiers.yellowDoll;
+			}else if(this.clayTeam==12) {
+				item1 = ClaySoldiers.lightBlueDoll;
+			}else if(this.clayTeam==13){
+				item1=ClaySoldiers.magentaDoll;
+            } else if(this.clayTeam == 14) {
                 item1 = ClaySoldiers.orangeDoll;
-            } else if(this.clayTeam == 6) {
-                item1 = ClaySoldiers.purpleDoll;
-            }
+            }else if(this.clayTeam==15){
+				item1=ClaySoldiers.whiteDoll;
+			}
 
             this.spawnAtLocation(item1.id, 1);
             if(this.resPoints > 0) {
@@ -1570,19 +1694,39 @@ public class EntityClayMan extends EntityAnimal {
             boolean z12 = super.hurt(e, i, (DamageType)null);
             if(z12 && this.getHealth() <= 0) {
                 Item item13 = ClaySoldiers.greyDoll;
-                if(this.clayTeam == 1) {
+				if(this.clayTeam==0){
+					item13=ClaySoldiers.blackDoll;
+				}else if(this.clayTeam == 1) {
                     item13 = ClaySoldiers.redDoll;
                 } else if(this.clayTeam == 2) {
-                    item13 = ClaySoldiers.yellowDoll;
-                } else if(this.clayTeam == 3) {
-                    item13 = ClaySoldiers.greenDoll;
+					item13 = ClaySoldiers.greenDoll;
+				}else if(this.clayTeam==3){
+					item13=ClaySoldiers.brownDoll;
                 } else if(this.clayTeam == 4) {
                     item13 = ClaySoldiers.blueDoll;
                 } else if(this.clayTeam == 5) {
+					item13 = ClaySoldiers.purpleDoll;
+				}else if(this.clayTeam==6) {
+					item13 = ClaySoldiers.cyanDoll;
+				}else if(this.clayTeam==7) {
+					item13 = ClaySoldiers.lightGrayDoll;
+				}else if(this.clayTeam==8) {
+					item13 = ClaySoldiers.grayDoll;
+				}else if(this.clayTeam==9) {
+					item13 = ClaySoldiers.pinkDoll;
+				}else if(this.clayTeam==10){
+					item13=ClaySoldiers.limeDoll;
+                } else if(this.clayTeam == 11) {
+					item13 = ClaySoldiers.yellowDoll;
+				}else if(this.clayTeam==12) {
+					item13 = ClaySoldiers.lightBlueDoll;
+				}else if(this.clayTeam==13){
+					item13=ClaySoldiers.magentaDoll;
+                } else if(this.clayTeam == 14) {
                     item13 = ClaySoldiers.orangeDoll;
-                } else if(this.clayTeam == 6) {
-                    item13 = ClaySoldiers.purpleDoll;
-                }
+                }else if(this.clayTeam==15){
+					item13=ClaySoldiers.whiteDoll;
+				}
 
                 for(int i14 = 0; i14 < 24; ++i14) {
                     double a = this.x + (double)(this.random.nextFloat() - this.random.nextFloat()) * 0.125D;
