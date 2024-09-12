@@ -247,7 +247,7 @@ public class EntityGravelChunk extends Entity {
             if(this.isInWater()) {
                 for(int i25 = 0; i25 < 4; ++i25) {
                     float f27 = 0.25F;
-                    this.world.spawnParticle("bubble", this.x - this.xd * (double)f27, this.y - this.yd * (double)f27, this.z - this.zd * (double)f27, this.xd, this.yd, this.zd);
+                    this.world.spawnParticle("bubble", this.x - this.xd * (double)f27, this.y - this.yd * (double)f27, this.z - this.zd * (double)f27, this.xd, this.yd, this.zd, 0);
                 }
 
                 f23 = 0.8F;
@@ -266,7 +266,7 @@ public class EntityGravelChunk extends Entity {
                 double d26 = this.x + (double)(this.random.nextFloat() - this.random.nextFloat()) * 0.125D;
                 b = this.bb.minY + 0.125D + (double)(this.random.nextFloat() - this.random.nextFloat()) * 0.25D;
                 double c = this.z + (double)(this.random.nextFloat() - this.random.nextFloat()) * 0.125D;
-                Minecraft.getMinecraft(this).effectRenderer.addEffect(new EntityDiggingFX(this.world, d26, b, c, 0.0D, 0.0D, 0.0D, Block.gravel, 0));
+                Minecraft.getMinecraft(this).effectRenderer.addEffect(new EntityDiggingFX(this.world, d26, b, c, 0.0D, 0.0D, 0.0D, Block.gravel, 0, 0));
                 this.world.playSoundAtEntity(null,this, "step.gravel", 0.6F, 1.0F / (this.random.nextFloat() * 0.2F + 0.9F));
             }
 
