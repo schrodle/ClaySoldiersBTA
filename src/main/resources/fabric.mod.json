@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
   "id": "claysoldiers",
-  "version": "2.1.0",
+  "version": "2.1.1",
 
   "name": "Clay Soldiers",
   "description": "Port of Clay Soldiers to BTA!. Add clay soldiers that fight for their color.",
   "authors": [
-    "ClickNin, Useless, RasVHW"
+    "ClickNin, Useless, RasVHW, schro"
   ],
   "contact": {
     "homepage": "",
@@ -38,7 +38,7 @@
 	"accessWidener": "claysoldiers.accesswidener",
 
   "depends": {
-		"minecraft": "7.1",
+		"minecraft": "7.2.1",
     "fabricloader": ">=0.15.5"
   },
   "suggests": {
