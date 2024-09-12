@@ -133,15 +133,17 @@ public class ClaySoldiersRecipes implements RecipeEntrypoint {
 			.addInput(new ItemStack(greyDoll,1))
 			.addInput(new ItemStack(Item.dye,1,15))
 			.create("white_soldier",new ItemStack(whiteDoll,1));
+
 	}
+
 
 	@Override
 	public void initNamespaces() {
-		RecipeEntrypoint.super.initNamespaces();
+		//RecipeEntrypoint.super.initNamespaces();
 	}
 
 	public void initializeRecipes(){
 		onRecipesReady();
-		initNamespaces();
+		//initNamespaces();
 	}
 }

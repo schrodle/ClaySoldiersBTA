@@ -69,7 +69,7 @@ public class EntityClayMan extends EntityAnimal {
         this.moveSpeed = 0.3F;
         this.setSize(0.15F, 0.4F);
         this.setPos(this.x, this.y, this.z);
-        this.skinName = "clayman";
+        //this.skinName = "clayman";
     }
 
     public EntityClayMan(World world, double x, double y, double z, int i) {
@@ -81,7 +81,7 @@ public class EntityClayMan extends EntityAnimal {
         this.moveSpeed = 0.3F;
         this.setSize(0.15F, 0.4F);
         this.setPos(x, y, z);
-        this.skinName = "clayman";
+        //this.skinName = "clayman";
         this.viewScale = 5.0;
         this.world.playSoundAtEntity(null,this, "step.gravel", 0.8F, ((this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F) * 0.9F);
     }
@@ -553,7 +553,7 @@ public class EntityClayMan extends EntityAnimal {
                                             d24 = this.x + (double)(this.random.nextFloat() - this.random.nextFloat()) * 0.125D;
                                             d30 = this.bb.minY + 0.125D + (double)(this.random.nextFloat() - this.random.nextFloat()) * 0.25D;
                                             d36 = this.z + (double)(this.random.nextFloat() - this.random.nextFloat()) * 0.125D;
-                                            Minecraft.getMinecraft(this).effectRenderer.addEffect(new EntityDiggingFX(this.world, d24, d30, d36, 0.0D, 0.0D, 0.0D, Block.planksOak, 0));
+                                            Minecraft.getMinecraft(this).effectRenderer.addEffect(new EntityDiggingFX(this.world, d24, d30, d36, 0.0D, 0.0D, 0.0D, Block.planksOak, 0, 0));
                                         }
 
                                         this.world.playSoundAtEntity(null,this, "random.wood click", 0.75F, 1.0F / (this.random.nextFloat() * 0.2F + 0.9F));
@@ -568,7 +568,7 @@ public class EntityClayMan extends EntityAnimal {
                                             d24 = this.x + (double)(this.random.nextFloat() - this.random.nextFloat()) * 0.125D;
                                             d30 = this.bb.minY + 0.125D + (double)(this.random.nextFloat() - this.random.nextFloat()) * 0.25D;
                                             d36 = this.z + (double)(this.random.nextFloat() - this.random.nextFloat()) * 0.125D;
-                                            Minecraft.getMinecraft(this).effectRenderer.addEffect(new EntityDiggingFX(this.world, d24, d30, d36, 0.0D, 0.0D, 0.0D, Block.wool, 0));
+                                            Minecraft.getMinecraft(this).effectRenderer.addEffect(new EntityDiggingFX(this.world, d24, d30, d36, 0.0D, 0.0D, 0.0D, Block.wool, 0, 0));
                                         }
 
                                         this.world.playSoundAtEntity(null,this, "step.cloth", 0.75F, 1.0F / (this.random.nextFloat() * 0.2F + 0.9F));
@@ -940,7 +940,7 @@ public class EntityClayMan extends EntityAnimal {
                                         d22 = this.x + (double)(this.random.nextFloat() - this.random.nextFloat()) * 0.125D;
                                         a1 = this.bb.minY + 0.125D + (double)(this.random.nextFloat() - this.random.nextFloat()) * 0.25D;
                                         b1 = this.z + (double)(this.random.nextFloat() - this.random.nextFloat()) * 0.125D;
-                                        Minecraft.getMinecraft(this).effectRenderer.addEffect(new EntityDiggingFX(this.world, d22, a1, b1, 0.0D, 0.0D, 0.0D, Block.planksOak, 0));
+                                        Minecraft.getMinecraft(this).effectRenderer.addEffect(new EntityDiggingFX(this.world, d22, a1, b1, 0.0D, 0.0D, 0.0D, Block.planksOak, 0, 0));
                                     }
 
                                     this.world.playSoundAtEntity(null, this, "random.wood click", 0.75F, 1.0F / (this.random.nextFloat() * 0.2F + 0.9F));
@@ -957,7 +957,7 @@ public class EntityClayMan extends EntityAnimal {
                                         d22 = this.x + (double)(this.random.nextFloat() - this.random.nextFloat()) * 0.125D;
                                         a1 = this.bb.minY + 0.125D + (double)(this.random.nextFloat() - this.random.nextFloat()) * 0.25D;
                                         b1 = this.z + (double)(this.random.nextFloat() - this.random.nextFloat()) * 0.125D;
-                                        Minecraft.getMinecraft(this).effectRenderer.addEffect(new EntityDiggingFX(this.world, d22, a1, b1, 0.0D, 0.0D, 0.0D, Block.wool, 0));
+                                        Minecraft.getMinecraft(this).effectRenderer.addEffect(new EntityDiggingFX(this.world, d22, a1, b1, 0.0D, 0.0D, 0.0D, Block.wool, 0, 0));
                                     }
 
                                     this.world.playSoundAtEntity(null, this, "step.cloth", 0.75F, 1.0F / (this.random.nextFloat() * 0.2F + 0.9F));
@@ -1658,7 +1658,7 @@ public class EntityClayMan extends EntityAnimal {
                             q = this.x + (double)(this.random.nextFloat() - this.random.nextFloat()) * 0.125D;
                             b = this.bb.minY + 0.125D + (double)(this.random.nextFloat() - this.random.nextFloat()) * 0.125D;
                             c = this.z + (double)(this.random.nextFloat() - this.random.nextFloat()) * 0.125D;
-                            this.world.spawnParticle("slime", q, b, c, 0.0D, 0.1D, 0.0D);
+                            this.world.spawnParticle("slime", q, b, c, 0.0D, 0.1D, 0.0D, 0);
                         }
 
                         this.xd = 0.0D;
@@ -1676,7 +1676,7 @@ public class EntityClayMan extends EntityAnimal {
                             q = this.x + (double)(this.random.nextFloat() - this.random.nextFloat()) * 0.125D;
                             b = this.bb.minY + 0.25D + (double)this.random.nextFloat() * 0.25D;
                             c = this.z + (double)(this.random.nextFloat() - this.random.nextFloat()) * 0.125D;
-                            this.world.spawnParticle("reddust", q, b, c, 0.0D, 0.1D, 0.0D);
+                            this.world.spawnParticle("reddust", q, b, c, 0.0D, 0.1D, 0.0D, 0);
                         }
 
                         this.targetFollow = null;

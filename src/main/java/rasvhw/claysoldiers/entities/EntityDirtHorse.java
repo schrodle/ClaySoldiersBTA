@@ -26,7 +26,7 @@ public class EntityDirtHorse extends EntityAnimal {
         this.moveSpeed = 0.6F;
         this.setSize(0.25F, 0.4F);
         this.setPos(this.x, this.y, this.z);
-        this.skinName = "dirt_horse";
+        //this.skinName = "dirt_horse";
         this.viewScale = 5.0D;
     }
 
@@ -38,7 +38,7 @@ public class EntityDirtHorse extends EntityAnimal {
         this.moveSpeed = 0.6F;
         this.setSize(0.25F, 0.4F);
         this.setPos(x, y, z);
-        this.skinName = "dirt_horse";
+        //this.skinName = "dirt_horse";
         this.viewScale = 5.0D;
         this.world.playSoundAtEntity(null, this, "step.gravel", 0.8F, ((this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F) * 0.9F);
     }
