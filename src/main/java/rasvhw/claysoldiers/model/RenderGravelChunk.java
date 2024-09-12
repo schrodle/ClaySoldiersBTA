@@ -1,30 +1,31 @@
 package rasvhw.claysoldiers.model;
 
+import net.minecraft.client.render.block.model.BlockModelStandard;
+import net.minecraft.core.block.entity.TileEntitySeat;
 import rasvhw.claysoldiers.entities.EntityGravelChunk;
 import net.minecraft.client.render.RenderBlocks;
 
 import java.util.Random;
 
-import net.minecraft.client.render.Tessellator;
+import net.minecraft.client.render.tessellator.Tessellator;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.util.helper.MathHelper;
+import net.minecraft.client.render.block.model.BlockModel;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 public class RenderGravelChunk extends EntityRenderer<EntityGravelChunk> {
     private RenderBlocks renderBlocks = new RenderBlocks();
     private Random random = new Random();
-
     public RenderGravelChunk() {
         this.shadowSize = 0.0F;
         this.shadowOpacity = 0.75F;
     }
 
     @Override
-
-    public void doRender(EntityGravelChunk entitygravelchunk, double d, double d1, double d2, float f, float f1) {
+    public void doRender(Tessellator tessellator, EntityGravelChunk entitygravelchunk, double d, double d1, double d2, float f, float f1) {
         this.random.setSeed(187L);
         ItemStack itemstack = new ItemStack(Block.gravel.id, 1, 0);
         GL11.glPushMatrix();
@@ -33,8 +34,9 @@ public class RenderGravelChunk extends EntityRenderer<EntityGravelChunk> {
         byte byte0 = 1;
         GL11.glTranslatef((float)d, (float)d1 + f2, (float)d2);
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        if(itemstack.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[itemstack.itemID].getRenderBlockPass())) {
-            GL11.glRotatef(f3, 0.0F, 1.0F, 0.0F);
+        //if(itemstack.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[itemstack.itemID].getRenderBlockPass())) {
+		if(itemstack.itemID < 256) {
+		GL11.glRotatef(f3, 0.0F, 1.0F, 0.0F);
             this.loadTexture("/terrain.png");
             float f4 = 0.1F;
             GL11.glScalef(f4, f4, f4);
@@ -47,8 +49,7 @@ public class RenderGravelChunk extends EntityRenderer<EntityGravelChunk> {
                     float f9 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F / f4;
                     GL11.glTranslatef(f5, f7, f9);
                 }
-
-                this.renderBlocks.renderBlockOnInventory(Block.blocksList[itemstack.itemID], itemstack.getMetadata(), entitygravelchunk.getBrightness(f1));
+				//this.renderBlocks.renderBlockOnInventory(Block.blocksList[itemstack.itemID], itemstack.getMetadata(), entitygravelchunk.getBrightness(f1));
                 GL11.glPopMatrix();
             }
         }

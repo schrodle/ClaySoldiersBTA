@@ -46,8 +46,8 @@ public class RenderClayMan extends LivingRenderer<EntityClayMan> {
     }
 
     @Override
-    public void doRender(EntityClayMan entityClayMan, double d, double d1, double d2, float f, float f1) {
+    public void render(EntityClayMan entityClayMan, double d, double d1, double d2, float f, float f1) {
         f1 *= 2.0F;
-        super.doRender(entityClayMan, d, d1, d2, f, f1);
+        super.render(entityClayMan, d, d1, d2, f, f1);
     }
 }

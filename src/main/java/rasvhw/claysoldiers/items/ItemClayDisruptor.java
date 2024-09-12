@@ -21,14 +21,15 @@ public class ItemClayDisruptor extends Item {
         this.setMaxDamage(16);
         this.setMaxStackSize(1);
     }
-
+	/*
     @Override
     public boolean shouldRotateAroundWhenRendering() {
         return true;
     }
+	 */
 
     @Override
-    public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer) {
+    public ItemStack onUseItem(ItemStack itemstack, World world, EntityPlayer entityplayer) {
         if(ClaySoldiers.waveTime <= 0) {
             itemstack.damageItem(1, entityplayer);
             ClaySoldiers.waveTime = 150;
@@ -78,7 +79,7 @@ public class ItemClayDisruptor extends Item {
                 double a = entityplayer.x + d * distance;
                 double b = entityplayer.bb.minY + 0.5D;
                 double c = entityplayer.z + f * distance;
-                world.spawnParticle("portal", a, b, c, d, 0.0D, f);
+                world.spawnParticle("portal", a, b, c, d, 0.0D, f, 0);
             }
         }
 
