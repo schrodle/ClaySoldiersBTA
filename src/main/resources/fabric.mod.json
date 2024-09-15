@@ -38,8 +38,8 @@
 	"accessWidener": "claysoldiers.accesswidener",
 
   "depends": {
-		"minecraft": "7.2.1",
-    "fabricloader": ">=0.15.5"
+		"minecraft": ">=7.2",
+    "fabricloader": ">=0.15.5"	
   },
   "suggests": {
   }
