@@ -1,5 +1,7 @@
 package rasvhw.claysoldiers.items;
 
+import net.minecraft.client.Minecraft;
+import rasvhw.claysoldiers.entities.EntityClayMan;
 import rasvhw.claysoldiers.entities.EntityDirtHorse;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.entity.player.EntityPlayer;
@@ -33,9 +35,17 @@ public class ItemDirtHorse extends Item {
                 double a = (double)blockX + 0.25D + (double)itemRand.nextFloat() * 0.5D;
                 double b = (double)blockY + 0.5D;
                 double c = (double)blockZ + 0.25D + (double)itemRand.nextFloat() * 0.5D;
-                EntityDirtHorse ec = new EntityDirtHorse(world, a, b, c);
-                world.entityJoinedWorld(ec);
-                jack = true;
+				if (Minecraft.getMinecraft(this) != null && !Minecraft.getMinecraft(this).isMultiplayerWorld()) {
+					//client, singleplayer
+					EntityDirtHorse ec = new EntityDirtHorse(world, a, b, c);
+					world.entityJoinedWorld(ec);
+				}
+				if (Minecraft.getMinecraft(this) == null) {
+					//server
+					EntityDirtHorse ec = new EntityDirtHorse(world, a, b, c);
+					world.entityJoinedWorld(ec);
+				}
+				jack = true;
                 --itemstack.stackSize;
             }
         }
