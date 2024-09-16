@@ -1732,7 +1732,9 @@ public class EntityClayMan extends EntityAnimal {
                     double a = this.x + (double)(this.random.nextFloat() - this.random.nextFloat()) * 0.125D;
                     double b1 = this.y + 0.25D + (double)(this.random.nextFloat() - this.random.nextFloat()) * 0.125D;
                     double c1 = this.z + (double)(this.random.nextFloat() - this.random.nextFloat()) * 0.125D;
-                    Minecraft.getMinecraft(this).effectRenderer.addEffect(new EntitySlimeChunkFX(this.world, a, b1, c1, item13));
+					if (Minecraft.getMinecraft(this) != null) { //TODO: Replace this stupid multiplayer hack
+						Minecraft.getMinecraft(this).effectRenderer.addEffect(new EntitySlimeChunkFX(this.world, a, b1, c1, item13));
+					}
                 }
 
                 this.removed = true;
