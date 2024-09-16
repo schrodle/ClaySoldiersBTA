@@ -140,6 +140,7 @@ public class ClaySoldiersRecipes implements RecipeEntrypoint {
 	@Override
 	public void initNamespaces() {
 		//RecipeEntrypoint.super.initNamespaces();
+		RecipeBuilder.initNameSpace(MOD_ID);
 	}
 
 	public void initializeRecipes(){
