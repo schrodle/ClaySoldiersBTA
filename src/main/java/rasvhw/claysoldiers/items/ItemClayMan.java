@@ -1,5 +1,7 @@
 package rasvhw.claysoldiers.items;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.MinecraftAccessor;
 import rasvhw.claysoldiers.entities.EntityClayMan;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.entity.player.EntityPlayer;
@@ -38,8 +40,17 @@ public class ItemClayMan extends Item {
                 double a = (double)blockX + 0.25D + (double)itemRand.nextFloat() * 0.5D;
                 double b = (double)blockY + 0.5D;
                 double c = (double)blockZ + 0.25D + (double)itemRand.nextFloat() * 0.5D;
-                EntityClayMan ec = new EntityClayMan(world, a, b, c, this.clayTeam);
-                world.entityJoinedWorld(ec);
+				//hacky multiplayer check
+				if (Minecraft.getMinecraft(this) != null && !Minecraft.getMinecraft(this).isMultiplayerWorld()) {
+					//client, singleplayer
+					EntityClayMan ec = new EntityClayMan(world, a, b, c, this.clayTeam);
+                	world.entityJoinedWorld(ec);
+				}
+				if (Minecraft.getMinecraft(this) == null) {
+					//server
+					EntityClayMan ec = new EntityClayMan(world, a, b, c, this.clayTeam);
+					world.entityJoinedWorld(ec);
+				}
                 jack = true;
                 --itemstack.stackSize;
             }
