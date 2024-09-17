@@ -92,8 +92,12 @@ public class EntityClayMan extends EntityAnimal {
         return clayManTexture(clayTeam);
     }
 
+	public int getClayTeam() {
+		return this.entityData.getInt(20);
+	}
+
 	public Item getDollItem() {
-		return this.getDollItem(this.entityData.getInt(20));
+		return this.getDollItem(this.getClayTeam());
 	}
 	public Item getDollItem(int clayTeam) {
 		switch (clayTeam) {
@@ -176,77 +180,17 @@ public class EntityClayMan extends EntityAnimal {
     }
 
     public int teamCloth(int teamNum) { //returns the appropriate wool metastate per team
-        if(teamNum==0){
-			return 15;
-		}else if(teamNum==1){
-			return 14;
-		}else if(teamNum==2){
-			return 13;
-		}else if(teamNum==3){
-			return 12;
-		}else if(teamNum==4){
-			return 11;
-		}else if(teamNum==5){
-			return 10;
-		}else if(teamNum==6){
-			return 9;
-		}else if(teamNum==7){
-			return 8;
-		}else if(teamNum==8){
-			return 7;
-		}else if(teamNum==9){
-			return 6;
-		}else if(teamNum==10){
-			return 5;
-		}else if(teamNum==11){
-			return 4;
-		}else if(teamNum==12){
-			return 3;
-		}else if(teamNum==13){
-			return 2;
-		}else if(teamNum==14){
-			return 1;
-		}else if(teamNum==15){
-			return 0;
-		}else{
+		if (teamNum >= 0 && teamNum < 16) {
+			return 15 - teamNum;
+		} else {
 			return 7;
 		}
     }
 
     public int teamDye(int teamNum) { //returns the dye metastate for each team
-        if (teamNum == 0) {
-            return 0;
-        } else if (teamNum == 1) {
-            return 1;
-		} else if (teamNum == 2) {
-			return 2;
-		}else if(teamNum==3){
-			return 3;
-		} else if (teamNum == 4) {
-			return 4;
-		} else if(teamNum==5) {
-			return 5;
-		} else if(teamNum==6) {
-			return 6;
-		}else if(teamNum==7) {
-			return 7;
-		}else if(teamNum==8) {
-			return 8;
-		}else if(teamNum==9) {
-			return 9;
-		}else if(teamNum==10){
-			return 10;
-        } else if (teamNum == 11) {
-			return 11;
-		}else if(teamNum==12) {
-			return 12;
-		}else if(teamNum==13) {
-			return 13;
-		}else if(teamNum==14) {
-			return 14;
-		}else if(teamNum==15){
-			return 15;
-		}else{
+		if (teamNum >= 0 && teamNum < 16) {
+			return teamNum;
+		} else {
 			return 8;
 		}
     }
