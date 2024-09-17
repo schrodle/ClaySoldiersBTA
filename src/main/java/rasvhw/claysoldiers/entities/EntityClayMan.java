@@ -83,6 +83,7 @@ public class EntityClayMan extends EntityAnimal {
         this.viewScale = 5.0;
 		//TODO: Replace old class variables with entity data to sync from server to clients.
 		this.entityData.define(20, i); //formerly this.clayTeam
+
         this.world.playSoundAtEntity(null,this, "step.gravel", 0.8F, ((this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F) * 0.9F);
     }
     public String getEntityTexture() {return clayManTexture(this.getClayTeam());}
@@ -1311,28 +1312,28 @@ public class EntityClayMan extends EntityAnimal {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag nbttagcompound) {
-        super.addAdditionalSaveData(nbttagcompound);
-        nbttagcompound.putShort("ClayTeam", (short)this.getClayTeam());
-        nbttagcompound.putShort("WeaponPoints", (short)this.weaponPoints);
-        nbttagcompound.putShort("ArmorPoints", (short)this.armorPoints);
-        nbttagcompound.putShort("FoodLeft", (short)this.foodLeft);
-        nbttagcompound.putShort("SugarTime", (short)this.sugarTime);
-        nbttagcompound.putShort("ResPoints", (short)this.resPoints);
-        nbttagcompound.putShort("StrikeTime", (short)this.strikeTime);
-        nbttagcompound.putShort("ClimbTime", (short)this.climbTime);
-        nbttagcompound.putShort("GooTime", (short)this.gooTime);
-        nbttagcompound.putShort("SmokeTime", (short)this.smokeTime);
-        nbttagcompound.putShort("GooStock", (short)this.gooStock);
-        nbttagcompound.putShort("SmokeStock", (short)this.smokeStock);
-        nbttagcompound.putShort("Logs", (short)this.logs);
-        nbttagcompound.putShort("Rocks", (short)this.rocks);
-        nbttagcompound.putBoolean("Gunpowdered", this.gunPowdered);
-        nbttagcompound.putBoolean("King", this.isKing());
-        nbttagcompound.putBoolean("Glowing", this.glowing);
-        nbttagcompound.putBoolean("StickSharp", this.stickSharp);
-        nbttagcompound.putBoolean("ArmorPadded", this.armorPadded);
-        nbttagcompound.putBoolean("HeavyCore", this.heavyCore);
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putShort("ClayTeam", (short)this.getClayTeam());
+        tag.putShort("WeaponPoints", (short)this.weaponPoints);
+        tag.putShort("ArmorPoints", (short)this.armorPoints);
+        tag.putShort("FoodLeft", (short)this.foodLeft);
+        tag.putShort("SugarTime", (short)this.sugarTime);
+        tag.putShort("ResPoints", (short)this.resPoints);
+        tag.putShort("StrikeTime", (short)this.strikeTime);
+        tag.putShort("ClimbTime", (short)this.climbTime);
+        tag.putShort("GooTime", (short)this.gooTime);
+        tag.putShort("SmokeTime", (short)this.smokeTime);
+        tag.putShort("GooStock", (short)this.gooStock);
+        tag.putShort("SmokeStock", (short)this.smokeStock);
+        tag.putShort("Logs", (short)this.logs);
+        tag.putShort("Rocks", (short)this.rocks);
+        tag.putBoolean("Gunpowdered", this.gunPowdered);
+        tag.putBoolean("King", this.isKing());
+        tag.putBoolean("Glowing", this.glowing);
+        tag.putBoolean("StickSharp", this.stickSharp);
+        tag.putBoolean("ArmorPadded", this.armorPadded);
+        tag.putBoolean("HeavyCore", this.heavyCore);
     }
     @Override
     public void readAdditionalSaveData(CompoundTag nbttagcompound) {
