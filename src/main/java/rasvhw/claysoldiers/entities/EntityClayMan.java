@@ -83,12 +83,57 @@ public class EntityClayMan extends EntityAnimal {
         this.setPos(x, y, z);
         //this.skinName = "clayman";
         this.viewScale = 5.0;
+		//TODO: Replace old class variables with entity data to sync from server to clients.
+		this.entityData.define(20, i); //formerly this.clayTeam
         this.world.playSoundAtEntity(null,this, "step.gravel", 0.8F, ((this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F) * 0.9F);
     }
     public String getEntityTexture() {return clayManTexture(clayTeam);}
     public String getDefaultEntityTexture() {
         return clayManTexture(clayTeam);
     }
+
+	public Item getDollItem() {
+		return this.getDollItem(this.entityData.getInt(20));
+	}
+	public Item getDollItem(int clayTeam) {
+		switch (clayTeam) {
+			case 0:
+				return ClaySoldiers.blackDoll;
+			case 1:
+				return ClaySoldiers.redDoll;
+			case 2:
+				return ClaySoldiers.greenDoll;
+			case 3:
+				return ClaySoldiers.brownDoll;
+			case 4:
+				return ClaySoldiers.blueDoll;
+			case 5:
+				return ClaySoldiers.purpleDoll;
+			case 6:
+				return ClaySoldiers.cyanDoll;
+			case 7:
+				return ClaySoldiers.lightGrayDoll;
+			case 8:
+				return ClaySoldiers.grayDoll;
+			case 9:
+				return ClaySoldiers.pinkDoll;
+			case 10:
+				return ClaySoldiers.limeDoll;
+			case 11:
+				return ClaySoldiers.yellowDoll;
+			case 12:
+				return ClaySoldiers.lightBlueDoll;
+			case 13:
+				return ClaySoldiers.magentaDoll;
+			case 14:
+				return ClaySoldiers.orangeDoll;
+			case 15:
+				return ClaySoldiers.whiteDoll;
+			default:
+				return ClaySoldiers.greyDoll; // default doll
+		}
+
+	}
 
     public String clayManTexture(int i) {
         String base = "/assets/claysoldiers/entity/clay_";
@@ -578,40 +623,7 @@ public class EntityClayMan extends EntityAnimal {
                                 } else if(itemStack16.getItem() != null && itemStack16.getItem() instanceof ItemClayMan) {
 									this.swingArm();
 									this.world.playSoundAtEntity(entityItem15, this, "step.gravel", 0.8F, ((this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F) * 0.9F);
-									Item item34 = ClaySoldiers.greyDoll;
-									if(this.clayTeam==0){
-										item34=ClaySoldiers.blackDoll;
-									}else if(this.clayTeam == 1) {
-                                        item34 = ClaySoldiers.redDoll;
-                                    } else if(this.clayTeam == 2) {
-										item34 = ClaySoldiers.greenDoll;
-									}else if(this.clayTeam==3){
-										item34=ClaySoldiers.brownDoll;
-                                    } else if(this.clayTeam == 4) {
-                                        item34 = ClaySoldiers.blueDoll;
-                                    } else if(this.clayTeam == 5) {
-										item34 = ClaySoldiers.purpleDoll;
-									}else if(this.clayTeam==6) {
-										item34 = ClaySoldiers.cyanDoll;
-									}else if(this.clayTeam==7) {
-										item34 = ClaySoldiers.lightGrayDoll;
-									}else if(this.clayTeam==8) {
-										item34 = ClaySoldiers.grayDoll;
-									}else if(this.clayTeam==9) {
-										item34 = ClaySoldiers.pinkDoll;
-									}else if(this.clayTeam==10){
-										item34=ClaySoldiers.limeDoll;
-                                    } else if(this.clayTeam == 11) {
-										item34 = ClaySoldiers.yellowDoll;
-									}else if(this.clayTeam==12) {
-										item34 = ClaySoldiers.lightBlueDoll;
-									}else if(this.clayTeam==13){
-										item34=ClaySoldiers.magentaDoll;
-                                    } else if(this.clayTeam == 14) {
-                                        item34 = ClaySoldiers.orangeDoll;
-                                    }else if(this.clayTeam==15){
-										item34=ClaySoldiers.whiteDoll;
-									}
+									Item item34 = this.getDollItem();
 
                                     for(int i26 = 0; i26 < 18; ++i26) {
                                         a = this.x + (double)(this.random.nextFloat() - this.random.nextFloat()) * 0.125D;
@@ -980,40 +992,7 @@ public class EntityClayMan extends EntityAnimal {
                                 if(ic.clayTeam == this.clayTeam) {
                                     if(arrived) {
                                         this.swingArm();
-                                        Item item1 = ClaySoldiers.greyDoll;
-										if(this.clayTeam==0){
-											item1=ClaySoldiers.blackDoll;
-										}else if(this.clayTeam == 1) {
-                                            item1 = ClaySoldiers.redDoll;
-                                        } else if(this.clayTeam == 2) {
-											item1 = ClaySoldiers.greenDoll;
-										}else if(this.clayTeam==3){
-											item1=ClaySoldiers.brownDoll;
-                                        } else if(this.clayTeam == 4) {
-                                            item1 = ClaySoldiers.blueDoll;
-                                        } else if(this.clayTeam == 5) {
-											item1 = ClaySoldiers.purpleDoll;
-										}else if(this.clayTeam==6) {
-											item1 = ClaySoldiers.cyanDoll;
-										}else if(this.clayTeam==7) {
-											item1 = ClaySoldiers.lightGrayDoll;
-										} else if (this.clayTeam == 8) {
-											item1=ClaySoldiers.grayDoll;
-										}else if(this.clayTeam==9) {
-											item1 = ClaySoldiers.pinkDoll;
-										}else if(this.clayTeam==10){
-											item1=ClaySoldiers.limeDoll;
-                                        } else if(this.clayTeam == 11) {
-											item1 = ClaySoldiers.yellowDoll;
-										}else if(this.clayTeam==12) {
-											item1 = ClaySoldiers.lightBlueDoll;
-										} else if (this.clayTeam == 13) {
-											item1=ClaySoldiers.magentaDoll;
-                                        } else if(this.clayTeam == 14) {
-                                            item1 = ClaySoldiers.orangeDoll;
-                                        }else if(this.clayTeam==15){
-											item1=ClaySoldiers.whiteDoll;
-										}
+                                        Item item1 = this.getDollItem();
 
                                         for(a = 0; a < 18; ++a) {
                                             a1 = this.x + (double)(this.random.nextFloat() - this.random.nextFloat()) * 0.125D;
@@ -1523,40 +1502,7 @@ public class EntityClayMan extends EntityAnimal {
     @Override
     public void dropFewItems() {
         if(!this.gunPowdered) {
-            Item item1 = ClaySoldiers.greyDoll;
-			if(this.clayTeam==0){
-				item1=ClaySoldiers.blackDoll;
-			}else if(this.clayTeam == 1) {
-                item1 = ClaySoldiers.redDoll;
-            } else if(this.clayTeam == 2) {
-				item1 = ClaySoldiers.greenDoll;
-			}else if(this.clayTeam==3){
-				item1=ClaySoldiers.brownDoll;
-            } else if(this.clayTeam == 4) {
-                item1 = ClaySoldiers.blueDoll;
-            } else if(this.clayTeam == 5) {
-				item1 = ClaySoldiers.purpleDoll;
-			}else if(this.clayTeam==6) {
-				item1 = ClaySoldiers.cyanDoll;
-			}else if(this.clayTeam==7) {
-				item1 = ClaySoldiers.lightGrayDoll;
-			}else if(this.clayTeam==8) {
-				item1 = ClaySoldiers.grayDoll;
-			}else if(this.clayTeam==9) {
-				item1 = ClaySoldiers.pinkDoll;
-			}else if(this.clayTeam==10){
-				item1=ClaySoldiers.limeDoll;
-            } else if(this.clayTeam == 11) {
-				item1 = ClaySoldiers.yellowDoll;
-			}else if(this.clayTeam==12) {
-				item1 = ClaySoldiers.lightBlueDoll;
-			}else if(this.clayTeam==13){
-				item1=ClaySoldiers.magentaDoll;
-            } else if(this.clayTeam == 14) {
-                item1 = ClaySoldiers.orangeDoll;
-            }else if(this.clayTeam==15){
-				item1=ClaySoldiers.whiteDoll;
-			}
+            Item item1 = this.getDollItem();
 
             this.spawnAtLocation(item1.id, 1);
             if(this.resPoints > 0) {
@@ -1693,40 +1639,7 @@ public class EntityClayMan extends EntityAnimal {
 
             boolean z12 = super.hurt(e, i, (DamageType)null);
             if(z12 && this.getHealth() <= 0) {
-                Item item13 = ClaySoldiers.greyDoll;
-				if(this.clayTeam==0){
-					item13=ClaySoldiers.blackDoll;
-				}else if(this.clayTeam == 1) {
-                    item13 = ClaySoldiers.redDoll;
-                } else if(this.clayTeam == 2) {
-					item13 = ClaySoldiers.greenDoll;
-				}else if(this.clayTeam==3){
-					item13=ClaySoldiers.brownDoll;
-                } else if(this.clayTeam == 4) {
-                    item13 = ClaySoldiers.blueDoll;
-                } else if(this.clayTeam == 5) {
-					item13 = ClaySoldiers.purpleDoll;
-				}else if(this.clayTeam==6) {
-					item13 = ClaySoldiers.cyanDoll;
-				}else if(this.clayTeam==7) {
-					item13 = ClaySoldiers.lightGrayDoll;
-				}else if(this.clayTeam==8) {
-					item13 = ClaySoldiers.grayDoll;
-				}else if(this.clayTeam==9) {
-					item13 = ClaySoldiers.pinkDoll;
-				}else if(this.clayTeam==10){
-					item13=ClaySoldiers.limeDoll;
-                } else if(this.clayTeam == 11) {
-					item13 = ClaySoldiers.yellowDoll;
-				}else if(this.clayTeam==12) {
-					item13 = ClaySoldiers.lightBlueDoll;
-				}else if(this.clayTeam==13){
-					item13=ClaySoldiers.magentaDoll;
-                } else if(this.clayTeam == 14) {
-                    item13 = ClaySoldiers.orangeDoll;
-                }else if(this.clayTeam==15){
-					item13=ClaySoldiers.whiteDoll;
-				}
+                Item item13 = this.getDollItem();
 
                 for(int i14 = 0; i14 < 24; ++i14) {
                     double a = this.x + (double)(this.random.nextFloat() - this.random.nextFloat()) * 0.125D;
