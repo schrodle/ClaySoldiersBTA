@@ -29,7 +29,7 @@ import net.minecraft.core.entity.player.EntityPlayer;
 import java.util.List;
 
 public class EntityClayMan extends EntityAnimal {
-    //public int clayTeam;
+    public int clayTeam;
     public int weaponPoints;
     public int armorPoints;
     public int foodLeft;
@@ -68,12 +68,14 @@ public class EntityClayMan extends EntityAnimal {
         this.moveSpeed = 0.3F;
         this.setSize(0.15F, 0.4F);
         this.setPos(this.x, this.y, this.z);
+		this.clayTeam = -1;
         //this.skinName = "clayman";
     }
 
     public EntityClayMan(World world, double x, double y, double z, int i) {
         super(world);
-        this.setHealthRaw(20);
+		//TODO: Replace old class variables with entity data to sync from server to clients.
+		this.setHealthRaw(20);
         this.heightOffset = 0.0F;
         this.footSize = 0.1F;
         this.moveSpeed = 0.3F;
@@ -81,21 +83,26 @@ public class EntityClayMan extends EntityAnimal {
         this.setPos(x, y, z);
         //this.skinName = "clayman";
         this.viewScale = 5.0;
-		//TODO: Replace old class variables with entity data to sync from server to clients.
-		this.entityData.define(20, i); //formerly this.clayTeam
-
+		this.setClayTeam(i);
         this.world.playSoundAtEntity(null,this, "step.gravel", 0.8F, ((this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F) * 0.9F);
     }
+
+	protected void init() {
+		super.init();
+		this.entityData.define(11, this.clayTeam); //team
+		this.entityData.getByte()
+	}
+
     public String getEntityTexture() {return clayManTexture(this.getClayTeam());}
     public String getDefaultEntityTexture() {
         return clayManTexture(this.getClayTeam());
     }
 
 	public int getClayTeam() {
-		return this.entityData.getInt(20);
+		return this.entityData.getInt(11);
 	}
 	public void setClayTeam(int clayTeam) {
-		this.entityData.set(20, clayTeam);
+		this.entityData.set(11, clayTeam);
 	}
 
 	public void setIsKing(boolean bool) {
@@ -1314,7 +1321,7 @@ public class EntityClayMan extends EntityAnimal {
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.putShort("ClayTeam", (short)this.getClayTeam());
+        tag.putInt("ClayTeam", this.getClayTeam());
         tag.putShort("WeaponPoints", (short)this.weaponPoints);
         tag.putShort("ArmorPoints", (short)this.armorPoints);
         tag.putShort("FoodLeft", (short)this.foodLeft);
@@ -1336,28 +1343,28 @@ public class EntityClayMan extends EntityAnimal {
         tag.putBoolean("HeavyCore", this.heavyCore);
     }
     @Override
-    public void readAdditionalSaveData(CompoundTag nbttagcompound) {
-        super.readAdditionalSaveData(nbttagcompound);
-        this.setClayTeam(nbttagcompound.getShort("ClayTeam"));
-        this.weaponPoints = nbttagcompound.getShort("WeaponPoints");
-        this.armorPoints = nbttagcompound.getShort("ArmorPoints");
-        this.foodLeft = nbttagcompound.getShort("FoodLeft");
-        this.sugarTime = nbttagcompound.getShort("SugarTime");
-        this.resPoints = nbttagcompound.getShort("ResPoints");
-        this.strikeTime = nbttagcompound.getShort("StrikeTime");
-        this.climbTime = nbttagcompound.getShort("ClimbTime");
-        this.gooTime = nbttagcompound.getShort("GooTime");
-        this.smokeTime = nbttagcompound.getShort("SmokeTime");
-        this.gooStock = nbttagcompound.getShort("GooStock");
-        this.smokeStock = nbttagcompound.getShort("SmokeStock");
-        this.logs = nbttagcompound.getShort("Logs");
-        this.rocks = nbttagcompound.getShort("Rocks");
-        this.gunPowdered = nbttagcompound.getBoolean("Gunpowdered");
-        this.setIsKing(nbttagcompound.getBoolean("King"));
-		this.glowing = nbttagcompound.getBoolean("Glowing");
-        this.stickSharp = nbttagcompound.getBoolean("StickSharp");
-        this.armorPadded = nbttagcompound.getBoolean("ArmorPadded");
-        this.heavyCore = nbttagcompound.getBoolean("HeavyCore");
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        this.setClayTeam(tag.getInteger("ClayTeam"));
+        this.weaponPoints = tag.getShort("WeaponPoints");
+        this.armorPoints = tag.getShort("ArmorPoints");
+        this.foodLeft = tag.getShort("FoodLeft");
+        this.sugarTime = tag.getShort("SugarTime");
+        this.resPoints = tag.getShort("ResPoints");
+        this.strikeTime = tag.getShort("StrikeTime");
+        this.climbTime = tag.getShort("ClimbTime");
+        this.gooTime = tag.getShort("GooTime");
+        this.smokeTime = tag.getShort("SmokeTime");
+        this.gooStock = tag.getShort("GooStock");
+        this.smokeStock = tag.getShort("SmokeStock");
+        this.logs = tag.getShort("Logs");
+        this.rocks = tag.getShort("Rocks");
+        this.gunPowdered = tag.getBoolean("Gunpowdered");
+        this.setIsKing(tag.getBoolean("King"));
+		this.glowing = tag.getBoolean("Glowing");
+        this.stickSharp = tag.getBoolean("StickSharp");
+        this.armorPadded = tag.getBoolean("ArmorPadded");
+        this.heavyCore = tag.getBoolean("HeavyCore");
     }
 
     @Override
