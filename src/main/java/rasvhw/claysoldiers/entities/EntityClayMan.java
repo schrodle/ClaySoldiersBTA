@@ -29,10 +29,10 @@ import net.minecraft.core.entity.player.EntityPlayer;
 import java.util.List;
 
 public class EntityClayMan extends EntityAnimal {
-    public int clayTeam;
-    public int weaponPoints;
-    public int armorPoints;
-    public int foodLeft;
+    //public int clayTeam;
+    //public int weaponPoints;
+    //public int armorPoints;
+    //public int foodLeft;
     public int sugarTime;
     public int resPoints;
     public int entCount;
@@ -68,8 +68,7 @@ public class EntityClayMan extends EntityAnimal {
         this.moveSpeed = 0.3F;
         this.setSize(0.15F, 0.4F);
         this.setPos(this.x, this.y, this.z);
-		this.clayTeam = -1;
-        //this.skinName = "clayman";
+		//this.skinName = "clayman";
     }
 
     public EntityClayMan(World world, double x, double y, double z, int i) {
@@ -89,8 +88,10 @@ public class EntityClayMan extends EntityAnimal {
 
 	protected void init() {
 		super.init();
-		this.entityData.define(11, this.clayTeam); //team
-		this.entityData.getByte()
+		this.entityData.define(11, -1); //team
+		this.entityData.define(12, 0); //weapon points
+		this.entityData.define(13, 0); //armor points
+		this.entityData.define(14, 0); //food remaining
 	}
 
     public String getEntityTexture() {return clayManTexture(this.getClayTeam());}
@@ -111,6 +112,14 @@ public class EntityClayMan extends EntityAnimal {
 
 	public boolean isKing() {
 		return this.king;
+	}
+
+	public void setFoodLeft(int foodLeft) {
+		this.entityData.set(14, foodLeft);
+	}
+
+	public int getFoodLeft() {
+		return this.entityData.getInt(14);
 	}
 
 	public Item getDollItem() {
@@ -233,7 +242,7 @@ public class EntityClayMan extends EntityAnimal {
         int list;
         double item;
         double a;
-        if(this.foodLeft > 0 && this.getHealth() <= 15 && this.getHealth() > 0) {
+        if(this.getFoodLeft() > 0 && this.getHealth() <= 15 && this.getHealth() > 0) {
             for(list = 0; list < 12; ++list) {
                 item = this.x + (double)(this.random.nextFloat() - this.random.nextFloat()) * 0.125D;
                 double gottam = this.y + 0.25D + (double)(this.random.nextFloat() - this.random.nextFloat()) * 0.125D;
@@ -242,7 +251,7 @@ public class EntityClayMan extends EntityAnimal {
             }
 
 			this.setHealthRaw(this.getHealth()+15);
-            --this.foodLeft;
+            this.setFoodLeft(this.getFoodLeft() - 1);
         }
 
         if(this.onGround) {
@@ -349,12 +358,12 @@ public class EntityClayMan extends EntityAnimal {
                         if(entityItem18.item != null) {
                             ItemStack ec = entityItem18.item;
                             if(ec.stackSize > 0) {
-                                if(this.weaponPoints <= 0 && ec.itemID == Item.stick.id) {
+                                if(this.getStickPoints() <= 0 && ec.itemID == Item.stick.id) {
                                     this.targetFollow = entityItem18;
                                     break;
                                 }
 
-                                if(this.armorPoints <= 0 && ec.itemID == Item.leather.id) {
+                                if(this.getArmorPoints() <= 0 && ec.itemID == Item.leather.id) {
                                     this.targetFollow = entityItem18;
                                     break;
                                 }
@@ -399,7 +408,7 @@ public class EntityClayMan extends EntityAnimal {
                                         break;
                                     }
 
-                                    if(this.foodLeft <= 0 && ec.getItem() != null && ec.getItem() instanceof ItemFood) {
+                                    if(this.getFoodLeft() <= 0 && ec.getItem() != null && ec.getItem() instanceof ItemFood) {
                                         this.targetFollow = entityItem18;
                                         break;
                                     }
@@ -419,12 +428,12 @@ public class EntityClayMan extends EntityAnimal {
                                         break;
                                     }
 
-                                    if(this.weaponPoints > 0 && !this.stickSharp && ec.itemID == Item.flint.id) {
+                                    if(this.getStickPoints() > 0 && !this.stickSharp && ec.itemID == Item.flint.id) {
                                         this.targetFollow = entityItem18;
                                         break;
                                     }
 
-                                    if(this.armorPoints > 0 && !this.armorPadded && ec.itemID == Block.wool.id) {
+                                    if(this.getArmorPoints() > 0 && !this.armorPadded && ec.itemID == Block.wool.id) {
                                         this.targetFollow = entityItem18;
                                         break;
                                     }
@@ -466,7 +475,7 @@ public class EntityClayMan extends EntityAnimal {
             }
 
             if(this.entityToAttack != null) {
-                if(this.strikeTime <= 0 && this.canEntityBeSeen(this.entityToAttack) && (double)this.distanceTo(this.entityToAttack) < (this.weaponPoints > 0 ? 1.0D : 0.7D) + (double)this.random.nextFloat() * 0.1D) {
+                if(this.strikeTime <= 0 && this.canEntityBeSeen(this.entityToAttack) && (double)this.distanceTo(this.entityToAttack) < (this.getStickPoints() > 0 ? 1.0D : 0.7D) + (double)this.random.nextFloat() * 0.1D) {
                     if(this.hitTargetMakesDead(this.entityToAttack)) {
                         this.entityToAttack = null;
                         this.setPathToEntity(null);
@@ -490,11 +499,11 @@ public class EntityClayMan extends EntityAnimal {
                         ItemStack itemStack16 = entityItem15.item;
                         if(itemStack16.stackSize > 0) {
                             if(itemStack16.itemID == Item.stick.id) {
-                                this.weaponPoints = 15;
-                                this.stickSharp = false;
-                                this.gotcha((EntityItem)this.targetFollow);
-                            } else if(itemStack16.itemID == Item.leather.id) {
-                                this.armorPoints = 15;
+								this.setStickPoints(15);
+								this.stickSharp = false;
+								this.gotcha((EntityItem)this.targetFollow);
+							} else if(itemStack16.itemID == Item.leather.id) {
+                                this.setArmorPoints(15);
                                 this.armorPadded = false;
                                 this.gotcha((EntityItem)this.targetFollow);
                             } else if(itemStack16.itemID == Block.gravel.id) {
@@ -533,7 +542,7 @@ public class EntityClayMan extends EntityAnimal {
                                 this.sugarTime = 1200;
                                 this.gotcha((EntityItem)this.targetFollow);
                             } else if(itemStack16.getItem() != null && itemStack16.getItem() instanceof ItemFood) {
-                                this.foodLeft = 4;
+                                this.setFoodLeft(4);
                                 this.gotcha((EntityItem)this.targetFollow);
                             } else if(itemStack16.itemID == Item.clay.id) {
                                 this.resPoints = 4;
@@ -552,7 +561,7 @@ public class EntityClayMan extends EntityAnimal {
                                 double d30;
                                 double d36;
                                 if(itemStack16.itemID == Item.flint.id) {
-                                    if(this.weaponPoints > 0) {
+                                    if(this.hasStick()) {
                                         this.stickSharp = true;
 
                                         for(i17 = 0; i17 < 4; ++i17) {
@@ -567,7 +576,7 @@ public class EntityClayMan extends EntityAnimal {
 
                                     this.targetFollow = null;
                                 } else if(itemStack16.itemID == Block.wool.id) {
-                                    if(this.armorPoints > 0) {
+                                    if(this.getArmorPoints() > 0) {
                                         this.armorPadded = true;
 
                                         for(i17 = 0; i17 < 4; ++i17) {
@@ -767,9 +776,9 @@ public class EntityClayMan extends EntityAnimal {
                 if(chest.getStackInSlot(q) != null) {
                     ItemStack stack = chest.getStackInSlot(q);
                     if(stack.stackSize > 0) {
-                        if(this.weaponPoints <= 0 && stack.itemID == Item.stick.id) {
+                        if(this.getStickPoints() <= 0 && stack.itemID == Item.stick.id) {
                             if(arrived) {
-                                this.weaponPoints = 15;
+                                this.setStickPoints(15);
                                 this.stickSharp = false;
                                 this.gotcha(chest, q);
                             }
@@ -777,9 +786,9 @@ public class EntityClayMan extends EntityAnimal {
                             return true;
                         }
 
-                        if(this.armorPoints <= 0 && stack.itemID == Item.leather.id) {
+                        if(this.getArmorPoints() <= 0 && stack.itemID == Item.leather.id) {
                             if(arrived) {
-                                this.armorPoints = 15;
+                                this.setArmorPoints(15);
                                 this.armorPadded = false;
                                 this.gotcha(chest, q);
                             }
@@ -848,9 +857,9 @@ public class EntityClayMan extends EntityAnimal {
                                 return true;
                             }
 
-                            if(this.foodLeft <= 0 && stack.getItem() != null && stack.getItem() instanceof ItemFood) {
+                            if(this.getFoodLeft() <= 0 && stack.getItem() != null && stack.getItem() instanceof ItemFood) {
                                 if(arrived) {
-                                    this.foodLeft = 4;
+                                    this.setFoodLeft(4);
                                     this.gotcha(chest, q);
                                 }
 
@@ -905,7 +914,7 @@ public class EntityClayMan extends EntityAnimal {
                             double b1;
                             int i18;
                             double d22;
-                            if(this.weaponPoints > 0 && !this.stickSharp && stack.itemID == Item.flint.id) {
+                            if(this.getStickPoints() > 0 && !this.stickSharp && stack.itemID == Item.flint.id) {
                                 if(arrived) {
                                     this.stickSharp = true;
 
@@ -922,7 +931,7 @@ public class EntityClayMan extends EntityAnimal {
                                 return true;
                             }
 
-                            if(this.armorPoints > 0 && !this.armorPadded && stack.itemID == Block.wool.id) {
+                            if(this.getArmorPoints() > 0 && !this.armorPadded && stack.itemID == Block.wool.id) {
                                 if(arrived) {
                                     this.armorPadded = true;
 
@@ -1266,9 +1275,9 @@ public class EntityClayMan extends EntityAnimal {
     public boolean hitTargetMakesDead(Entity e) {
         this.strikeTime = 12;
         this.swingArm();
-        int power = this.weaponPoints > 0 ? 3 + this.random.nextInt(2) + (this.stickSharp ? 1 : 0) : 2;
-        if(this.weaponPoints > 0) {
-            --this.weaponPoints;
+        int power = this.getStickPoints() > 0 ? 3 + this.random.nextInt(2) + (this.stickSharp ? 1 : 0) : 2;
+        if(this.getStickPoints() > 0) {
+			this.setStickPoints(this.getStickPoints() - 1);
         }
 
         boolean flag = e.hurt(this, power, null);
@@ -1322,9 +1331,9 @@ public class EntityClayMan extends EntityAnimal {
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putInt("ClayTeam", this.getClayTeam());
-        tag.putShort("WeaponPoints", (short)this.weaponPoints);
-        tag.putShort("ArmorPoints", (short)this.armorPoints);
-        tag.putShort("FoodLeft", (short)this.foodLeft);
+        tag.putShort("WeaponPoints", (short)this.getStickPoints());
+        tag.putShort("ArmorPoints", (short)this.getArmorPoints());
+        tag.putShort("FoodLeft", (short)this.getFoodLeft());
         tag.putShort("SugarTime", (short)this.sugarTime);
         tag.putShort("ResPoints", (short)this.resPoints);
         tag.putShort("StrikeTime", (short)this.strikeTime);
@@ -1346,9 +1355,9 @@ public class EntityClayMan extends EntityAnimal {
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         this.setClayTeam(tag.getInteger("ClayTeam"));
-        this.weaponPoints = tag.getShort("WeaponPoints");
-        this.armorPoints = tag.getShort("ArmorPoints");
-        this.foodLeft = tag.getShort("FoodLeft");
+        this.setStickPoints(tag.getShort("WeaponPoints"));
+        this.setArmorPoints(tag.getShort("ArmorPoints"));
+        this.setFoodLeft(tag.getShort("FoodLeft"));
         this.sugarTime = tag.getShort("SugarTime");
         this.resPoints = tag.getShort("ResPoints");
         this.strikeTime = tag.getShort("StrikeTime");
@@ -1415,14 +1424,33 @@ public class EntityClayMan extends EntityAnimal {
     protected boolean canDespawn() {
         return false;
     }
+	public void setStickPoints(int stickPoints) {
+		this.entityData.set(12, stickPoints);
+	}
+
+	public int getStickPoints() {
+		return this.entityData.getInt(12);
+	}
 
     public boolean hasStick() {
-        return this.weaponPoints > 0;
+        return getStickPoints() > 0;
     }
 
+	public void setArmorPoints(int armorPoints) {
+		this.entityData.set(13, armorPoints);
+	}
+
+	public int getArmorPoints() {
+		return this.entityData.getInt(13);
+	}
+
     public boolean hasArmor() {
-        return this.armorPoints > 0;
+        return this.getArmorPoints() > 0;
     }
+
+	public void setSpecks(boolean bool) {
+		this.gunPowdered = bool;
+	}
 
     public boolean hasSpecks() {
         return this.gunPowdered;
@@ -1443,6 +1471,9 @@ public class EntityClayMan extends EntityAnimal {
     public boolean isPadded() {
         return this.armorPadded;
     }
+	public void setGooey(int gooTime) {
+		this.gooTime = gooTime;
+	}
 
     public boolean isGooey() {
         return this.gooTime > 0;
@@ -1470,11 +1501,11 @@ public class EntityClayMan extends EntityAnimal {
                 this.spawnAtLocation(Item.clay.id, 1);
             }
 
-            if(this.weaponPoints > 7 && this.random.nextInt(2) == 0) {
+            if(this.getStickPoints() > 7 && this.random.nextInt(2) == 0) {
                 this.spawnAtLocation(Item.stick.id, 1);
             }
 
-            if(this.armorPoints > 7 && this.random.nextInt(2) == 0) {
+            if(this.getArmorPoints() > 7 && this.random.nextInt(2) == 0) {
                 this.spawnAtLocation(Item.leather.id, 1);
             }
 
@@ -1539,13 +1570,12 @@ public class EntityClayMan extends EntityAnimal {
                     this.entityToAttack = e;
                 }
 
-                if(this.armorPoints > 0) {
+                if(this.getArmorPoints() > 0) {
                     i /= 2;
                     if(this.armorPadded) {
                         --i;
                     }
-
-                    --this.armorPoints;
+					this.setArmorPoints(this.getArmorPoints() - 1);
                     if(i < 0) {
                         i = 0;
                     }
