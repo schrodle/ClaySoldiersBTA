@@ -29,7 +29,7 @@ import net.minecraft.core.entity.player.EntityPlayer;
 import java.util.List;
 
 public class EntityClayMan extends EntityAnimal {
-    public int clayTeam;
+    //public int clayTeam;
     public int weaponPoints;
     public int armorPoints;
     public int foodLeft;
@@ -63,7 +63,6 @@ public class EntityClayMan extends EntityAnimal {
     public EntityClayMan(World world) {
         super(world);
         this.setHealthRaw(20);
-        this.clayTeam = -1;
         this.heightOffset = 0.0F;
         this.footSize = 0.1F;
         this.moveSpeed = 0.3F;
@@ -75,7 +74,6 @@ public class EntityClayMan extends EntityAnimal {
     public EntityClayMan(World world, double x, double y, double z, int i) {
         super(world);
         this.setHealthRaw(20);
-        this.clayTeam = i;
         this.heightOffset = 0.0F;
         this.footSize = 0.1F;
         this.moveSpeed = 0.3F;
@@ -87,13 +85,24 @@ public class EntityClayMan extends EntityAnimal {
 		this.entityData.define(20, i); //formerly this.clayTeam
         this.world.playSoundAtEntity(null,this, "step.gravel", 0.8F, ((this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F) * 0.9F);
     }
-    public String getEntityTexture() {return clayManTexture(clayTeam);}
+    public String getEntityTexture() {return clayManTexture(this.getClayTeam());}
     public String getDefaultEntityTexture() {
-        return clayManTexture(clayTeam);
+        return clayManTexture(this.getClayTeam());
     }
 
 	public int getClayTeam() {
 		return this.entityData.getInt(20);
+	}
+	public void setClayTeam(int clayTeam) {
+		this.entityData.set(20, clayTeam);
+	}
+
+	public void setIsKing(boolean bool) {
+		this.king = bool;
+	}
+
+	public boolean isKing() {
+		return this.king;
 	}
 
 	public Item getDollItem() {
@@ -290,7 +299,7 @@ public class EntityClayMan extends EntityAnimal {
                 Entity entity14 = (Entity)list12.get(i13);
                 if(entity14 instanceof EntityClayMan && this.random.nextInt(3) == 0 && this.canEntityBeSeen(entity14)) {
                     EntityClayMan entityClayMan20 = (EntityClayMan)entity14;
-                    if(entityClayMan20.getHealth() > 0 && entityClayMan20.clayTeam != this.clayTeam && this.clayTeam > 0 && this.logs <= 0) {
+                    if(entityClayMan20.getHealth() > 0 && entityClayMan20.getClayTeam() != this.getClayTeam() && this.getClayTeam() > 0 && this.logs <= 0) {
                         if(entityClayMan20.king) {
                             if(this.entityToAttack == null || !(this.entityToAttack instanceof EntityClayMan)) {
                                 this.entityToAttack = entityClayMan20;
@@ -306,7 +315,7 @@ public class EntityClayMan extends EntityAnimal {
                             this.entityToAttack = entityClayMan20;
                             break;
                         }
-                    } else if(entityClayMan20.getHealth() > 0 && this.targetFollow == null && this.entityToAttack == null && entityClayMan20.king && entityClayMan20.clayTeam == this.clayTeam && (double)this.distanceTo(entityClayMan20) > 3.0D) {
+                    } else if(entityClayMan20.getHealth() > 0 && this.targetFollow == null && this.entityToAttack == null && entityClayMan20.king && entityClayMan20.getClayTeam() == this.getClayTeam() && (double)this.distanceTo(entityClayMan20) > 3.0D) {
                         this.targetFollow = entityClayMan20;
                         break;
                     }
@@ -352,7 +361,7 @@ public class EntityClayMan extends EntityAnimal {
                                     break;
                                 }
 
-                                if(!this.king && ec.itemID == Item.ingotGold.id) {
+                                if(!this.isKing() && ec.itemID == Item.ingotGold.id) {
                                     boolean z29 = false;
                                     List b = this.world.getEntitiesWithinAABBExcludingEntity(this, this.bb.expand(24.0D, 16.0D, 24.0D));
 
@@ -360,7 +369,7 @@ public class EntityClayMan extends EntityAnimal {
                                         Entity c = (Entity)b.get(b1);
                                         if(c instanceof EntityClayMan) {
                                             EntityClayMan c1 = (EntityClayMan)c;
-                                            if(c1.clayTeam == this.clayTeam && c1.king) {
+                                            if(c1.getClayTeam() == this.getClayTeam() && c1.king) {
                                                 z29 = true;
                                                 break;
                                             }
@@ -419,12 +428,12 @@ public class EntityClayMan extends EntityAnimal {
 
                                     if(this.resPoints > 0 && ec.getItem() != null && ec.getItem() instanceof ItemClayMan) {
                                         ItemClayMan itemClayMan28 = (ItemClayMan)ec.getItem();
-                                        if(itemClayMan28.clayTeam == this.clayTeam) {
+                                        if(itemClayMan28.clayTeam == this.getClayTeam()) {
                                             this.targetFollow = entityItem18;
                                             break;
                                         }
                                     } else {
-                                        if(ec.itemID == Item.dye.id && ec.getMetadata() == this.teamDye(this.clayTeam)) {
+                                        if(ec.itemID == Item.dye.id && ec.getMetadata() == this.teamDye(this.getClayTeam())) {
                                             this.targetFollow = entityItem18;
                                             break;
                                         }
@@ -494,7 +503,7 @@ public class EntityClayMan extends EntityAnimal {
                                     Entity entity27 = (Entity)list23.get(i32);
                                     if(entity27 instanceof EntityClayMan) {
                                         EntityClayMan entityClayMan33 = (EntityClayMan)entity27;
-                                        if(entityClayMan33.clayTeam == this.clayTeam && entityClayMan33.king) {
+                                        if(entityClayMan33.getClayTeam() == this.getClayTeam() && entityClayMan33.king) {
                                             z22 = true;
                                             break;
                                         }
@@ -502,7 +511,7 @@ public class EntityClayMan extends EntityAnimal {
                                 }
 
                                 if(!z22) {
-                                    this.king = true;
+									this.setIsKing(true);
                                     this.gotcha((EntityItem)this.targetFollow);
                                     entityItem15.remove();
                                 } else {
@@ -576,7 +585,7 @@ public class EntityClayMan extends EntityAnimal {
                                         Minecraft.getMinecraft(this).effectRenderer.addEffect(new EntitySlimeChunkFX(this.world, a, d35, d37, item34));
                                     }
 
-                                    entityClayMan21 = new EntityClayMan(this.world, entityItem15.x, entityItem15.y, entityItem15.z, this.clayTeam);
+                                    entityClayMan21 = new EntityClayMan(this.world, entityItem15.x, entityItem15.y, entityItem15.z, this.getClayTeam());
                                     this.world.entityJoinedWorld(entityClayMan21);
                                     this.gotcha((EntityItem)this.targetFollow);
                                     --this.resPoints;
@@ -789,7 +798,7 @@ public class EntityClayMan extends EntityAnimal {
                         }
 
                         int a;
-                        if(!this.king && stack.itemID == Item.ingotGold.id) {
+                        if(!this.isKing() && stack.itemID == Item.ingotGold.id) {
                             boolean z21 = false;
                             List list24 = this.world.getEntitiesWithinAABBExcludingEntity(this, this.bb.expand(24.0D, 16.0D, 24.0D));
 
@@ -797,7 +806,7 @@ public class EntityClayMan extends EntityAnimal {
                                 Entity entity23 = (Entity)list24.get(a);
                                 if(entity23 instanceof EntityClayMan) {
                                     EntityClayMan entityClayMan25 = (EntityClayMan)entity23;
-                                    if(entityClayMan25.clayTeam == this.clayTeam && entityClayMan25.king) {
+                                    if(entityClayMan25.getClayTeam() == this.getClayTeam() && entityClayMan25.king) {
                                         z21 = true;
                                         break;
                                     }
@@ -806,7 +815,7 @@ public class EntityClayMan extends EntityAnimal {
 
                             if(!z21) {
                                 if(arrived) {
-                                    this.king = true;
+                                    this.setIsKing(true);
                                     this.gotcha(chest, q);
                                 }
 
@@ -933,7 +942,7 @@ public class EntityClayMan extends EntityAnimal {
 
                             if(this.resPoints > 0 && stack.getItem() != null && stack.getItem() instanceof ItemClayMan) {
                                 ItemClayMan ic = (ItemClayMan)stack.getItem();
-                                if(ic.clayTeam == this.clayTeam) {
+                                if(ic.clayTeam == this.getClayTeam()) {
                                     if(arrived) {
                                         this.swingArm();
                                         Item item1 = this.getDollItem();
@@ -948,7 +957,7 @@ public class EntityClayMan extends EntityAnimal {
                                         double d20 = this.x + (double)(this.random.nextFloat() - this.random.nextFloat()) * 0.125D;
                                         double b = this.y + (double)this.random.nextFloat() * 0.125D;
                                         double c = this.z + (double)(this.random.nextFloat() - this.random.nextFloat()) * 0.125D;
-                                        EntityClayMan ec = new EntityClayMan(this.world, d20, b, c, this.clayTeam);
+                                        EntityClayMan ec = new EntityClayMan(this.world, d20, b, c, this.getClayTeam());
                                         this.world.entityJoinedWorld(ec);
                                         this.gotcha(chest, q);
                                         --this.resPoints;
@@ -1268,7 +1277,7 @@ public class EntityClayMan extends EntityAnimal {
     public void throwRockAtEnemy(Entity entity) {
         double d = entity.x - this.x;
         double d1 = entity.z - this.z;
-        EntityGravelChunk entitygravelchunk = new EntityGravelChunk(this.world, this, this.clayTeam);
+        EntityGravelChunk entitygravelchunk = new EntityGravelChunk(this.world, this, this.getClayTeam());
         entitygravelchunk.y += 0.3999999761581421D;
         double d2 = entity.y + (double)entity.getHeadHeight() - 0.10000000298023223D - entitygravelchunk.y;
         float f1 = MathHelper.sqrt_double(d * d + d1 * d1) * 0.2F;
@@ -1304,7 +1313,7 @@ public class EntityClayMan extends EntityAnimal {
     @Override
     public void addAdditionalSaveData(CompoundTag nbttagcompound) {
         super.addAdditionalSaveData(nbttagcompound);
-        nbttagcompound.putShort("ClayTeam", (short)this.clayTeam);
+        nbttagcompound.putShort("ClayTeam", (short)this.getClayTeam());
         nbttagcompound.putShort("WeaponPoints", (short)this.weaponPoints);
         nbttagcompound.putShort("ArmorPoints", (short)this.armorPoints);
         nbttagcompound.putShort("FoodLeft", (short)this.foodLeft);
@@ -1319,7 +1328,7 @@ public class EntityClayMan extends EntityAnimal {
         nbttagcompound.putShort("Logs", (short)this.logs);
         nbttagcompound.putShort("Rocks", (short)this.rocks);
         nbttagcompound.putBoolean("Gunpowdered", this.gunPowdered);
-        nbttagcompound.putBoolean("King", this.king);
+        nbttagcompound.putBoolean("King", this.isKing());
         nbttagcompound.putBoolean("Glowing", this.glowing);
         nbttagcompound.putBoolean("StickSharp", this.stickSharp);
         nbttagcompound.putBoolean("ArmorPadded", this.armorPadded);
@@ -1328,7 +1337,7 @@ public class EntityClayMan extends EntityAnimal {
     @Override
     public void readAdditionalSaveData(CompoundTag nbttagcompound) {
         super.readAdditionalSaveData(nbttagcompound);
-        this.clayTeam = nbttagcompound.getShort("ClayTeam");
+        this.setClayTeam(nbttagcompound.getShort("ClayTeam"));
         this.weaponPoints = nbttagcompound.getShort("WeaponPoints");
         this.armorPoints = nbttagcompound.getShort("ArmorPoints");
         this.foodLeft = nbttagcompound.getShort("FoodLeft");
@@ -1343,8 +1352,8 @@ public class EntityClayMan extends EntityAnimal {
         this.logs = nbttagcompound.getShort("Logs");
         this.rocks = nbttagcompound.getShort("Rocks");
         this.gunPowdered = nbttagcompound.getBoolean("Gunpowdered");
-        this.king = nbttagcompound.getBoolean("King");
-        this.glowing = nbttagcompound.getBoolean("Glowing");
+        this.setIsKing(nbttagcompound.getBoolean("King"));
+		this.glowing = nbttagcompound.getBoolean("Glowing");
         this.stickSharp = nbttagcompound.getBoolean("StickSharp");
         this.armorPadded = nbttagcompound.getBoolean("ArmorPadded");
         this.heavyCore = nbttagcompound.getBoolean("HeavyCore");
@@ -1412,7 +1421,7 @@ public class EntityClayMan extends EntityAnimal {
     }
 
     public boolean hasCrown() {
-        return this.king;
+        return this.isKing();
     }
 
     public boolean isGlowing() {
@@ -1485,7 +1494,7 @@ public class EntityClayMan extends EntityAnimal {
                 this.spawnAtLocation(Item.dustGlowstone.id, 1);
             }
 
-            if(this.king) {
+            if(this.isKing()) {
                 this.spawnAtLocation(Item.ingotGold.id, 1);
             }
 
@@ -1510,7 +1519,7 @@ public class EntityClayMan extends EntityAnimal {
         } else {
             if(e != null && e instanceof EntityClayMan) {
                 EntityClayMan fred = (EntityClayMan)e;
-                if(fred.clayTeam == this.clayTeam) {
+                if(fred.getClayTeam() == this.getClayTeam()) {
                     return false;
                 }
 
