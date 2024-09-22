@@ -4,7 +4,6 @@ import rasvhw.claysoldiers.entities.EntityClayMan;
 
 import net.minecraft.client.render.entity.LivingRenderer;
 import net.minecraft.client.render.model.ModelBiped;
-import net.minecraft.core.entity.EntityLiving;
 import org.lwjgl.opengl.GL11;
 
 public class RenderClayMan extends LivingRenderer<EntityClayMan> {
@@ -18,18 +17,18 @@ public class RenderClayMan extends LivingRenderer<EntityClayMan> {
     @Override
     protected void preRenderCallback(EntityClayMan entityClayMan, float f) {
         this.mc1.hasStick = entityClayMan.hasStick();
-        this.mc1.hasSpecks = entityClayMan.hasSpecks();
+        this.mc1.hasSpecks = entityClayMan.isGunPowdered();
         this.mc1.hasArmor = entityClayMan.hasArmor();
         this.mc1.hasCrown = entityClayMan.hasCrown();
         this.mc1.isPadded = entityClayMan.isPadded();
-        this.mc1.isSharpened = entityClayMan.isSharpened();
+        this.mc1.isSharpened = entityClayMan.isStickSharp();
         this.mc1.isGooey = entityClayMan.isGooey();
         this.mc1.hasLogs = entityClayMan.hasLogs();
         this.mc1.hasRocks = entityClayMan.hasRocks();
         this.mc1.armLeft = entityClayMan.armLeft();
         boolean flag = false;
         if(entityClayMan.isOnLadder()) {
-            ++entityClayMan.climbTime;
+            entityClayMan.setClimbTime(entityClayMan.getClimbTime() + 1);
             flag = true;
         }
 

@@ -79,8 +79,8 @@ public class EntityDirtHorse extends EntityAnimal {
             EntityClayMan rider = (EntityClayMan)this.passenger;
             EntityAccessor accessor = (EntityAccessor)rider;
             this.isJumping = accessor.getIsJumping() || this.isInWater();
-            this.moveForward = accessor.getMoveForward() * (rider.sugarTime > 0 ? 1.0F : 2.0F);
-            this.moveStrafing = accessor.getMoveStrafing() * (rider.sugarTime > 0 ? 1.0F : 2.0F);
+            this.moveForward = accessor.getMoveForward() * (rider.getSugarTime() > 0 ? 1.0F : 2.0F);
+            this.moveStrafing = accessor.getMoveStrafing() * (rider.getSugarTime() > 0 ? 1.0F : 2.0F);
             this.xRot = this.xRotO = rider.xRot;
             this.yRot = this.yRotO = rider.yRot;
             rider.renderYawOffset = this.renderYawOffset;
