@@ -416,8 +416,7 @@ public class EntityClayMan extends EntityAnimal {
 									boolean z29 = false;
 									List<Entity> b = this.world.getEntitiesWithinAABBExcludingEntity(this, this.bb.expand(24.0D, 16.0D, 24.0D));
 
-									for (int b1 = 0; b1 < b.size(); ++b1) {
-										Entity c = b.get(b1);
+									for (Entity c : b) {
 										if (c instanceof EntityClayMan) {
 											EntityClayMan c1 = (EntityClayMan) c;
 											if (c1.getClayTeam() == this.getClayTeam() && c1.isKing()) {
@@ -550,8 +549,7 @@ public class EntityClayMan extends EntityAnimal {
 								boolean z22 = false;
 								List<Entity> list23 = this.world.getEntitiesWithinAABBExcludingEntity(this, this.bb.expand(24.0D, 16.0D, 24.0D));
 
-								for (int i32 = 0; i32 < list23.size(); ++i32) {
-									Entity entity27 = list23.get(i32);
+								for (Entity entity27 : list23) {
 									if (entity27 instanceof EntityClayMan) {
 										EntityClayMan entityClayMan33 = (EntityClayMan) entity27;
 										if (entityClayMan33.getClayTeam() == this.getClayTeam() && entityClayMan33.isKing()) {
@@ -648,18 +646,16 @@ public class EntityClayMan extends EntityAnimal {
 									this.gotcha((EntityItem) this.targetFollow);
 									this.setResPoints(this.getResPoints() - 1);
 								} else if (itemStack16.itemID == Block.planksOak.id && !this.isPassenger() || itemStack16.itemID == Block.planksOakPainted.id && !this.isPassenger()) {
-									byte b31 = 0;
+									byte grabbingPlanks = 0;
 									if (this.getLogs() < 20 && itemStack16.stackSize >= 5) {
-										b31 = 1;
+										grabbingPlanks = 1;
 									}
 
-									if (b31 > 0) {
+									if (grabbingPlanks > 0) {
 										this.world.playSoundAtEntity(null, this, "random.pop", 0.2F, ((this.random.nextFloat() - this.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-										if (b31 == 1) {
-											this.setLogs(this.getLogs() + 5);
-											if (entityItem15.item != null) {
-												entityItem15.item.stackSize -= 5;
-											}
+										this.setLogs(this.getLogs() + 5);
+										if (entityItem15.item != null) {
+											entityItem15.item.stackSize -= 5;
 										}
 
 										if (entityItem15.item == null || entityItem15.item.stackSize <= 0) {
@@ -857,21 +853,20 @@ public class EntityClayMan extends EntityAnimal {
 
 						int a;
 						if (!this.isKing() && stack.itemID == Item.ingotGold.id) {
-							boolean z21 = false;
+							boolean alliedKingExists = false; //does an allied king exist nearby?
 							List<Entity> list24 = this.world.getEntitiesWithinAABBExcludingEntity(this, this.bb.expand(24.0D, 16.0D, 24.0D));
-
 							for (a = 0; a < list24.size(); ++a) {
-								Entity entity23 = list24.get(a);
-								if (entity23 instanceof EntityClayMan) {
-									EntityClayMan entityClayMan25 = (EntityClayMan) entity23;
+								Entity potentialClayman = list24.get(a);
+								if (potentialClayman instanceof EntityClayMan) {
+									EntityClayMan entityClayMan25 = (EntityClayMan) potentialClayman;
 									if (entityClayMan25.getClayTeam() == this.getClayTeam() && entityClayMan25.isKing()) {
-										z21 = true;
+										alliedKingExists = true;
 										break;
 									}
 								}
 							}
 
-							if (!z21) {
+							if (!alliedKingExists) {
 								if (arrived) {
 									this.setIsKing(true);
 									this.gotcha(chest, q);
@@ -1001,8 +996,8 @@ public class EntityClayMan extends EntityAnimal {
 							}
 
 							if (this.getResPoints() > 0 && stack.getItem() != null && stack.getItem() instanceof ItemClayMan) {
-								ItemClayMan ic = (ItemClayMan) stack.getItem();
-								if (ic.clayTeam == this.getClayTeam()) {
+								ItemClayMan resurrectionTarget = (ItemClayMan) stack.getItem();
+								if (resurrectionTarget.clayTeam == this.getClayTeam()) {
 									if (arrived) {
 										this.swingArm();
 										Item item1 = this.getDollItem();
@@ -1019,8 +1014,8 @@ public class EntityClayMan extends EntityAnimal {
 										double d20 = this.x + (double) (this.random.nextFloat() - this.random.nextFloat()) * 0.125D;
 										double b = this.y + (double) this.random.nextFloat() * 0.125D;
 										double c = this.z + (double) (this.random.nextFloat() - this.random.nextFloat()) * 0.125D;
-										EntityClayMan ec = new EntityClayMan(this.world, d20, b, c, this.getClayTeam());
-										this.world.entityJoinedWorld(ec);
+										EntityClayMan resurrectedClayMan = new EntityClayMan(this.world, d20, b, c, this.getClayTeam());
+										this.world.entityJoinedWorld(resurrectedClayMan);
 										this.gotcha(chest, q);
 										this.setResPoints(this.getResPoints() - 1);
 									}
