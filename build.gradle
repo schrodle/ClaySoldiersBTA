@@ -24,6 +24,14 @@ repositories {
 		name = 'Fabric'
 		url = 'https://maven.fabricmc.net/'
 	}
+	maven {
+		name = 'signalumMavenReleases'
+		url = 'https://maven.thesignalumproject.net/releases'
+	}
+	maven {
+		name = 'signalumMavenInfrastructure'
+		url = "https://maven.thesignalumproject.net/infrastructure"
+	}
 	ivy {
 		url = "https://github.com/Better-than-Adventure"
 		patternLayout {
