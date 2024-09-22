@@ -1,10 +1,8 @@
 package rasvhw.claysoldiers.model;
 
-import rasvhw.claysoldiers.entities.EntityClayMan;
 import rasvhw.claysoldiers.entities.EntityDirtHorse;
 import net.minecraft.client.render.entity.LivingRenderer;
 import net.minecraft.client.render.model.ModelBiped;
-import net.minecraft.core.entity.EntityLiving;
 import org.lwjgl.opengl.GL11;
 
 public class RenderDirtHorse extends LivingRenderer<EntityDirtHorse> {

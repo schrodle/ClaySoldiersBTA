@@ -1,7 +1,6 @@
 package rasvhw.claysoldiers.items;
 
 import net.minecraft.client.Minecraft;
-import rasvhw.claysoldiers.entities.EntityClayMan;
 import rasvhw.claysoldiers.entities.EntityDirtHorse;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.entity.player.EntityPlayer;

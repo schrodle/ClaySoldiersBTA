@@ -55,18 +55,17 @@ public class EntityDirtHorse extends EntityAnimal {
                 return;
             }
 
-            List list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.bb.expand(0.1D, 0.1D, 0.1D));
-
-            for(int i = 0; i < list.size(); ++i) {
-                Entity entity = (Entity)list.get(i);
-                if(entity instanceof EntityClayMan) {
-                    EntityLiving entityliving = (EntityLiving)entity;
-                    if(entityliving.vehicle == null && entityliving.passenger != this) {
-                        entity.startRiding(this);
-                        break;
-                    }
-                }
-            }
+            List<Entity> potentialRiders = this.world.getEntitiesWithinAABBExcludingEntity(this, this.bb.expand(0.1D, 0.1D, 0.1D));
+			//Look for unmounted clay men. If one exists, grab it as a passenger.
+			for (Entity entity : potentialRiders) {
+				if (entity instanceof EntityClayMan) {
+					EntityLiving entityliving = (EntityLiving) entity;
+					if (entityliving.vehicle == null && entityliving.passenger != this) {
+						entity.startRiding(this);
+						break;
+					}
+				}
+			}
 
             this.gotRider = false;
         }
@@ -109,16 +108,16 @@ public class EntityDirtHorse extends EntityAnimal {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag nbttagcompound) {
-        super.addAdditionalSaveData(nbttagcompound);
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
         this.gotRider = this.passenger == null;
-        nbttagcompound.putBoolean("GotRider", this.gotRider);
+        tag.putBoolean("GotRider", this.gotRider);
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag nbttagcompound) {
-        super.readAdditionalSaveData(nbttagcompound);
-        this.gotRider = nbttagcompound.getBoolean("GotRider");
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        this.gotRider = tag.getBoolean("GotRider");
     }
 
     @Override
@@ -149,11 +148,11 @@ public class EntityDirtHorse extends EntityAnimal {
     }
 
     public boolean hurt(Entity e, int i, DamageType type) {
-        if(e == null || !(e instanceof EntityClayMan)) {
+        if(!(e instanceof EntityClayMan)) {
             i = 30;
         }
 
-        boolean fred = super.hurt(e, i, (DamageType) null);
+        boolean fred = super.hurt(e, i, null);
         if(fred && this.getHealth() <= 0) {
             Item item1 = ClaySoldiers.dirtHorse;
 
@@ -173,7 +172,7 @@ public class EntityDirtHorse extends EntityAnimal {
     @Override
     public void knockBack(Entity entity, int i, double d, double d1) {
         super.knockBack(entity, i, d, d1);
-        if(entity != null && entity instanceof EntityClayMan) {
+        if(entity instanceof EntityClayMan) {
             this.xd *= 0.6D;
             this.yd *= 0.75D;
             this.zd *= 0.6D;

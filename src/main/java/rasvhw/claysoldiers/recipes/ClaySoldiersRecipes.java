@@ -3,7 +3,6 @@ package rasvhw.claysoldiers.recipes;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.item.Item;
 import net.minecraft.core.item.ItemStack;
-import rasvhw.claysoldiers.items.ItemClayMan;
 import turniplabs.halplibe.helper.RecipeBuilder;
 import turniplabs.halplibe.util.RecipeEntrypoint;
 
