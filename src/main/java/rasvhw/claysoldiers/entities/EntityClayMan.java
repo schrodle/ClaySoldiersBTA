@@ -71,12 +71,10 @@ public class EntityClayMan extends EntityAnimal {
 		this.setSize(0.15F, 0.4F);
 		this.setPos(this.x, this.y, this.z);
 		this.setClayTeam(-1);
-		//this.skinName = "clayman";
 	}
 
 	public EntityClayMan(World world, double x, double y, double z, int i) {
 		super(world);
-		//TODO: Replace old class variables with entity data to sync from server to clients.
 		this.setHealthRaw(20);
 		this.heightOffset = 0.0F;
 		this.footSize = 0.1F;
@@ -345,11 +343,11 @@ public class EntityClayMan extends EntityAnimal {
 
 		if (this.getSmokeTime() <= 0 && this.entCount > 2 + this.random.nextInt(2) && this.getHealth() > 0) {
 			this.entCount = 0;
-			List list12 = this.world.getEntitiesWithinAABBExcludingEntity(this, this.bb.expand(8.0D, 5.0D, 8.0D));
+			List<Entity> nearbyEntities = this.world.getEntitiesWithinAABBExcludingEntity(this, this.bb.expand(8.0D, 5.0D, 8.0D));
 
 			EntityClayMan entityClayMan21;
-			for (i13 = 0; i13 < list12.size(); ++i13) {
-				Entity entity14 = (Entity) list12.get(i13);
+			for (i13 = 0; i13 < nearbyEntities.size(); ++i13) {
+				Entity entity14 = nearbyEntities.get(i13);
 				if (entity14 instanceof EntityClayMan && this.random.nextInt(3) == 0 && this.canEntityBeSeen(entity14)) {
 					EntityClayMan entityClayMan20 = (EntityClayMan) entity14;
 					if (entityClayMan20.getHealth() > 0 && entityClayMan20.getClayTeam() != this.getClayTeam() && this.getClayTeam() > 0 && this.getLogs() <= 0) {
@@ -416,10 +414,10 @@ public class EntityClayMan extends EntityAnimal {
 
 								if (!this.isKing() && ec.itemID == Item.ingotGold.id) {
 									boolean z29 = false;
-									List b = this.world.getEntitiesWithinAABBExcludingEntity(this, this.bb.expand(24.0D, 16.0D, 24.0D));
+									List<Entity> b = this.world.getEntitiesWithinAABBExcludingEntity(this, this.bb.expand(24.0D, 16.0D, 24.0D));
 
 									for (int b1 = 0; b1 < b.size(); ++b1) {
-										Entity c = (Entity) b.get(b1);
+										Entity c = b.get(b1);
 										if (c instanceof EntityClayMan) {
 											EntityClayMan c1 = (EntityClayMan) c;
 											if (c1.getClayTeam() == this.getClayTeam() && c1.isKing()) {
@@ -550,10 +548,10 @@ public class EntityClayMan extends EntityAnimal {
 								this.gotcha((EntityItem) this.targetFollow);
 							} else if (itemStack16.itemID == Item.ingotGold.id) {
 								boolean z22 = false;
-								List list23 = this.world.getEntitiesWithinAABBExcludingEntity(this, this.bb.expand(24.0D, 16.0D, 24.0D));
+								List<Entity> list23 = this.world.getEntitiesWithinAABBExcludingEntity(this, this.bb.expand(24.0D, 16.0D, 24.0D));
 
 								for (int i32 = 0; i32 < list23.size(); ++i32) {
-									Entity entity27 = (Entity) list23.get(i32);
+									Entity entity27 = list23.get(i32);
 									if (entity27 instanceof EntityClayMan) {
 										EntityClayMan entityClayMan33 = (EntityClayMan) entity27;
 										if (entityClayMan33.getClayTeam() == this.getClayTeam() && entityClayMan33.isKing()) {
@@ -812,7 +810,7 @@ public class EntityClayMan extends EntityAnimal {
 
 	public boolean chestOperations(int x, int y, int z, boolean arrived) {
 		TileEntity te = this.world.getBlockTileEntity(x, y, z);
-		if (te != null && te instanceof TileEntityChest) {
+		if (te instanceof TileEntityChest) {
 			TileEntityChest chest = (TileEntityChest) te;
 
 			for (int q = 0; q < chest.getSizeInventory(); ++q) {
@@ -860,10 +858,10 @@ public class EntityClayMan extends EntityAnimal {
 						int a;
 						if (!this.isKing() && stack.itemID == Item.ingotGold.id) {
 							boolean z21 = false;
-							List list24 = this.world.getEntitiesWithinAABBExcludingEntity(this, this.bb.expand(24.0D, 16.0D, 24.0D));
+							List<Entity> list24 = this.world.getEntitiesWithinAABBExcludingEntity(this, this.bb.expand(24.0D, 16.0D, 24.0D));
 
 							for (a = 0; a < list24.size(); ++a) {
-								Entity entity23 = (Entity) list24.get(a);
+								Entity entity23 = list24.get(a);
 								if (entity23 instanceof EntityClayMan) {
 									EntityClayMan entityClayMan25 = (EntityClayMan) entity23;
 									if (entityClayMan25.getClayTeam() == this.getClayTeam() && entityClayMan25.isKing()) {
@@ -944,10 +942,8 @@ public class EntityClayMan extends EntityAnimal {
 
 								if (arrived && b19 > 0) {
 									this.world.playSoundAtEntity(null, this, "random.pop", 0.2F, ((this.random.nextFloat() - this.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-									if (b19 == 1) {
-										this.setLogs(this.getLogs() + 5);
-										chest.decrStackSize(q, 5);
-									}
+									this.setLogs(this.getLogs() + 5);
+									chest.decrStackSize(q, 5);
 								}
 
 								return b19 > 0 || arrived;
@@ -1071,8 +1067,8 @@ public class EntityClayMan extends EntityAnimal {
 
 			if (!flag) {
 				double d10 = (double) broad;
-				List list11 = this.world.getEntitiesWithinAABBExcludingEntity(this, this.bb.expand(d10, d10, d10));
-				if (list11.size() > 0) {
+				List<Entity> list11 = this.world.getEntitiesWithinAABBExcludingEntity(this, this.bb.expand(d10, d10, d10));
+				if (!list11.isEmpty()) {
 					flag = true;
 				}
 			}
@@ -1332,9 +1328,7 @@ public class EntityClayMan extends EntityAnimal {
 		boolean flag = e.hurt(this, power, null);
 		if (flag && e instanceof EntityLiving) {
 			EntityLiving el = (EntityLiving) e;
-			if (el.getHealth() <= 0) {
-				return true;
-			}
+			return el.getHealth() <= 0;
 		}
 
 		return false;
@@ -1531,10 +1525,6 @@ public class EntityClayMan extends EntityAnimal {
 		return this.isArmorPadded();
 	}
 
-	public void setGooey(int gooTime) {
-		this.setGooTime(gooTime);
-	}
-
 	public boolean isGooey() {
 		return this.getGooTime() > 0;
 	}
@@ -1612,11 +1602,11 @@ public class EntityClayMan extends EntityAnimal {
 	public boolean hurt(Entity e, int i, DamageType type) {
 		if (this.vehicle != null && i < 100 && this.random.nextInt(2) == 0) {
 			if (vehicle instanceof Entity) {
-				return ((Entity) this.vehicle).hurt(e, i, (DamageType) null);
+				return ((Entity) this.vehicle).hurt(e, i, null);
 			}
 			return false;
 		} else {
-			if (e != null && e instanceof EntityClayMan) {
+			if (e instanceof EntityClayMan) {
 				EntityClayMan fred = (EntityClayMan) e;
 				if (fred.getClayTeam() == this.getClayTeam()) {
 					return false;
@@ -1688,7 +1678,7 @@ public class EntityClayMan extends EntityAnimal {
 				}
 			}
 
-			boolean z12 = super.hurt(e, i, (DamageType) null);
+			boolean z12 = super.hurt(e, i, null);
 			if (z12 && this.getHealth() <= 0) {
 				Item item13 = this.getDollItem();
 
@@ -1702,12 +1692,12 @@ public class EntityClayMan extends EntityAnimal {
 				}
 
 				this.removed = true;
-				if (e != null && e instanceof EntityPlayer) {
+				if (e instanceof EntityPlayer) {
 					this.killedByPlayer = e;
 				}
 
 				if (this.isGunPowdered()) {
-					this.world.createExplosion((Entity) null, this.x, this.y, this.z, 1.0F);
+					this.world.createExplosion(null, this.x, this.y, this.z, 1.0F);
 				}
 			}
 
@@ -1727,7 +1717,7 @@ public class EntityClayMan extends EntityAnimal {
 	public void knockBack(Entity entity, int i, double d, double d1) {
 		if (this.getGooTime() <= 0) {
 			super.knockBack(entity, i, d, d1);
-			if (entity != null && entity instanceof EntityClayMan) {
+			if (entity instanceof EntityClayMan) {
 				EntityClayMan ec = (EntityClayMan) entity;
 				if ((!ec.isHeavyCore() || !this.isHeavyCore()) && (ec.isHeavyCore() || this.isHeavyCore())) {
 					if (!ec.isHeavyCore() && this.isHeavyCore()) {
@@ -1743,7 +1733,7 @@ public class EntityClayMan extends EntityAnimal {
 					this.yd *= 0.75D;
 					this.zd *= 0.6D;
 				}
-			} else if (entity != null && entity instanceof EntityGravelChunk) {
+			} else if (entity instanceof EntityGravelChunk) {
 				this.xd *= 0.6D;
 				this.yd *= 0.75D;
 				this.zd *= 0.6D;
