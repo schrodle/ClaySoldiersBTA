@@ -120,8 +120,8 @@ public class EntityClayMan extends EntityAnimal {
 
 	private byte setValueAtPosition(byte b, int position, boolean value) {
 		return  (byte) (value
-			? b | (1 << position)
-			: b & ~(1 << position));
+			? b | (1 << (position - 1))
+			: b & ~(1 << (position - 1)));
 	}
 
 	public String getDefaultEntityTexture() {
