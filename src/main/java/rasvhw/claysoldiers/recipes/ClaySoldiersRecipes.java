@@ -18,13 +18,13 @@ public class ClaySoldiersRecipes implements RecipeEntrypoint {
 		RecipeBuilder.Shaped(MOD_ID)
 			.setShape("1", "2")
 			.addInput('1', Block.blockClay)
-			.addInput('2', Block.sand)
+			.addInput('2', Block.soulsand)
 			.create("grey_soldier", new ItemStack(greyDoll, 4));
 		//Dirt Horse
 		RecipeBuilder.Shaped(MOD_ID)
 			.setShape("121","1 1")
 			.addInput('1',Block.dirt)
-			.addInput('2',Block.sand)
+			.addInput('2',Block.soulsand)
 			.create("dirt_horse", new ItemStack(dirtHorse,4));
 		//Clay Disruptor
 		RecipeBuilder.Shaped(MOD_ID)
