@@ -1103,8 +1103,6 @@ public class EntityClayMan extends EntityAnimal {
 			this.world.setBlockWithNotify(x, y, z, Block.stairsPlanksOak.id);
 			this.world.setBlockMetadataWithNotify(x, y, z, r);
 		}
-		String binaryString = Integer.toBinaryString(r);
-		this.world.sendGlobalMessage(String.format("%32s", binaryString).replace(' ', '0'));
 	}
 
 	//TODO: Rebalance housing costs?
