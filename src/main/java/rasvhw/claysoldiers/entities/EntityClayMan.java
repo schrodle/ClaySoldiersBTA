@@ -1085,57 +1085,76 @@ public class EntityClayMan extends EntityAnimal {
 		this.spawnAtLocation(Block.planksOak.id, this.getLogs());
 		this.setLogs(0);
 	}
+
+	private void placeWoodBlock(int x, int y, int z) {
+		if (this.getClayTeam() >= 0 && this.getClayTeam() < 16) {
+			this.world.setBlockWithNotify(x, y, z, Block.planksOakPainted.id);
+			this.world.setBlockMetadataWithNotify(x, y, z, this.teamCloth(this.getClayTeam()));
+		} else {
+			this.world.setBlockWithNotify(x, y, z, Block.planksOak.id);
+		}
+	}
+
+	private void placeWoodStairs(int x, int y, int z, int r) {
+		if (this.getClayTeam() >= 0 && this.getClayTeam() < 16) {
+			this.world.setBlockWithNotify(x, y, z, Block.stairsPlanksOakPainted.id);
+			this.world.setBlockMetadataWithNotify(x, y, z, r + (this.teamCloth(this.getClayTeam()) << 4));
+		} else {
+			this.world.setBlockWithNotify(x, y, z, Block.stairsPlanksOak.id);
+			this.world.setBlockMetadataWithNotify(x, y, z, r);
+		}
+		String binaryString = Integer.toBinaryString(r);
+		this.world.sendGlobalMessage(String.format("%32s", binaryString).replace(' ', '0'));
+	}
+
+	//TODO: Rebalance housing costs?
 	//10 planks, 12 plank stairs. 5 planks to build. 5 oak logs equates to 20 planks.
 	public void buildHouseOne() {
-		int x = MathHelper.floor_double(this.x + 0.5D);
-		int y = MathHelper.floor_double(this.bb.minY);
-		int z = MathHelper.floor_double(this.z + 0.5D);
+		int x0 = MathHelper.floor_double(this.x + 0.5D);
+		int y0 = MathHelper.floor_double(this.bb.minY);
+		int z0 = MathHelper.floor_double(this.z + 0.5D);
 		int direction = this.random.nextInt(4);
 
 		for (int j = 0; j < 3; ++j) { //3 tall?
-			int b = j;
+			int y1 = j;
 
 			for (int i = -1; i < 3; ++i) { //4 wide?
 				for (int k = -1; k < 2; ++k) { //3 long?
-					int a = i;
-					int c = k;
+					int x1 = i;
+					int z1 = k;
 					if (direction % 2 == 0) {
-						a = -i;
-						c = -k;
+						x1 = -i;
+						z1 = -k;
 					}
 
 					if (direction / 2 == 0) {
-						int swap = a;
-						a = c;
-						c = swap;
+						int swap = x1;
+						x1 = z1;
+						z1 = swap;
 					}
 
 					if (j == 0) {
 						if (i != -1 && i != 2 && k != -1) {
-							this.world.setBlockWithNotify(x + a, y + b, z + c, 0);
+							this.world.setBlockWithNotify(x0 + x1, y0 + y1, z0 + z1, 0);
 						} else {
-							this.world.setBlockWithNotify(x + a, y + b, z + c, Block.planksOak.id);
+							this.placeWoodBlock(x0 + x1, y0 + y1, z0 + z1);
 						}
 					} else if (j == 1) {
 						if (i == -1) {
-							this.world.setBlock(x + a, y + b, z + c, Block.stairsPlanksOak.id);
-							this.world.setBlockMetadataWithNotify(x + a, y + b, z + c, (direction + 2 + (direction % 2 == 0 ? 1 : -1)) % 4);
+							this.placeWoodStairs(x0 + x1, y0 + y1, z0 +z1, (direction + 2 + (direction % 2 == 0 ? 1 : -1)) % 4);
 						} else if (i == 2) {
-							this.world.setBlock(x + a, y + b, z + c, Block.stairsPlanksOak.id);
-							this.world.setBlockMetadataWithNotify(x + a, y + b, z + c, (direction + 2) % 4);
+							this.placeWoodStairs(x0 + x1, y0 + y1, z0 +z1, (direction + 2) % 4);
 						} else if (k == -1) {
-							this.world.setBlockWithNotify(x + a, y + b, z + c, Block.planksOak.id);
+							this.placeWoodBlock(x0 + x1, y0 + y1, z0 + z1);
 						} else {
-							this.world.setBlockWithNotify(x + a, y + b, z + c, 0);
+							this.world.setBlockWithNotify(x0 + x1, y0 + y1, z0 + z1, 0);
 						}
 					} else if (i == 0) {
-						this.world.setBlock(x + a, y + b, z + c, Block.stairsPlanksOak.id);
-						this.world.setBlockMetadataWithNotify(x + a, y + b, z + c, (direction + 2 + (direction % 2 == 0 ? 1 : -1)) % 4);
+						this.placeWoodStairs(x0 + x1, y0 + y1, z0 +z1, (direction + 2 + (direction % 2 == 0 ? 1 : -1)) % 4);
 					} else if (i == 1) {
-						this.world.setBlock(x + a, y + b, z + c, Block.stairsPlanksOak.id);
-						this.world.setBlockMetadataWithNotify(x + a, y + b, z + c, (direction + 2) % 4);
+						this.placeWoodStairs(x0 + x1, y0 + y1, z0 + z1, (direction + 2) % 4);
 					} else {
-						this.world.setBlockWithNotify(x + a, y + b, z + c, 0);
+						this.world.setBlockWithNotify(x0 + x1, y0 + y1, z0 + z1, 0);
 					}
 				}
 			}
@@ -1148,52 +1167,48 @@ public class EntityClayMan extends EntityAnimal {
 
 	//32 planks, 12 plank stairs. 10 planks for a clayman to build. 10 oak logs equates to 40 planks
 	public void buildHouseTwo() {
-		int x = MathHelper.floor_double(this.x);
-		int y = MathHelper.floor_double(this.bb.minY);
-		int z = MathHelper.floor_double(this.z);
+		int x0 = MathHelper.floor_double(this.x);
+		int y0 = MathHelper.floor_double(this.bb.minY);
+		int z0 = MathHelper.floor_double(this.z);
 		int direction = this.random.nextInt(4);
 
 		for (int j = 0; j < 3; ++j) { //3 tall?
-			int b = j;
+			int y1 = j;
 
 			for (int i = -2; i < 3; ++i) {  //5 wide?
 				for (int k = -2; k < 3; ++k) {//5 long?
-					int a = i;
-					int c = k;
+					int x1 = i;
+					int z1 = k;
 					if (direction % 2 == 0) {
-						a = -i;
-						c = -k;
+						x1 = -i;
+						z1 = -k;
 					}
 
 					if (direction / 2 == 0) {
-						int swap = a;
-						a = c;
-						c = swap;
+						int swap = x1;
+						x1 = z1;
+						z1 = swap;
 					}
 
 					if (i != -2 && i != 2 || k != -2 && k != 2) {
 						if (j != 0 && j != 1) {
 							if (j == 2) {
 								if (i == -2) {
-									this.world.setBlock(x + a, y + b, z + c, Block.stairsPlanksOak.id);
-									this.world.setBlockMetadataWithNotify(x + a, y + b, z + c, (direction + 2 + (direction % 2 == 0 ? 1 : -1)) % 4);
+									this.placeWoodStairs(x0 + x1, y0 + y1, z0 + z1, (direction + 2 + (direction % 2 == 0 ? 1 : -1)) % 4);
 								} else if (i == 2) {
-									this.world.setBlock(x + a, y + b, z + c, Block.stairsPlanksOak.id);
-									this.world.setBlockMetadataWithNotify(x + a, y + b, z + c, (direction + 2) % 4);
+									this.placeWoodStairs(x0 + x1, y0 + y1, z0 + z1, (direction + 2) % 4);
 								} else if (k == -2) {
-									this.world.setBlock(x + a, y + b, z + c, Block.stairsPlanksOak.id);
-									this.world.setBlockMetadataWithNotify(x + a, y + b, z + c, (direction + (direction % 2 == 0 ? 1 : -1)) % 4);
+									this.placeWoodStairs(x0 + x1, y0 + y1, z0 + z1, (direction + (direction % 2 == 0 ? 1 : -1)) % 4);
 								} else if (k == 2) {
-									this.world.setBlock(x + a, y + b, z + c, Block.stairsPlanksOak.id);
-									this.world.setBlockMetadataWithNotify(x + a, y + b, z + c, direction % 4);
+									this.placeWoodStairs(x0 + x1, y0 + y1, z0 + z1, direction % 4);
 								} else {
-									this.world.setBlockWithNotify(x + a, y + b, z + c, Block.planksOak.id);
+									this.placeWoodBlock(x0 + x1, y0 + y1, z0 + z1);
 								}
 							}
 						} else if (i != -2 && i != 2 && k != -2 && (k != 2 || i == 0 && j != 1)) {
-							this.world.setBlockWithNotify(x + a, y + b, z + c, 0);
+							this.world.setBlockWithNotify(x0 + x1, y0 + y1, z0 + z1, 0);
 						} else {
-							this.world.setBlockWithNotify(x + a, y + b, z + c, Block.planksOak.id);
+							this.placeWoodBlock(x0 + x1, y0 + y1, z0 + z1);
 						}
 					}
 				}
@@ -1207,70 +1222,66 @@ public class EntityClayMan extends EntityAnimal {
 
 	//67 planks, 11 plank stairs, one chest, and 16 sticks. 15 planks to for a clayman to build. 15 oak logs equates to 60 planks - which is far more reasonable
 	public void buildHouseThree() {
-		int x = MathHelper.floor_double(this.x);
-		int y = MathHelper.floor_double(this.bb.minY);
-		int z = MathHelper.floor_double(this.z);
+		int x0 = MathHelper.floor_double(this.x);
+		int y0 = MathHelper.floor_double(this.bb.minY);
+		int z0 = MathHelper.floor_double(this.z);
 		int direction = this.random.nextInt(4);
 
 		for (int j = 0; j < 4; ++j) { //4 tall
-			int b = j;
+			int y1 = j;
 
 			for (int i = -3; i < 4; ++i) { //7 wide?
 				for (int k = -2; k < 3; ++k) {
-					int a = i;
-					int c = k;
+					int x1 = i;
+					int z1 = k;
 					if (direction % 2 == 0) {
-						a = -i;
-						c = -k;
+						x1 = -i;
+						z1 = -k;
 					}
 
 					if (direction / 2 == 0) {
-						int chest = a;
-						a = c;
-						c = chest;
+						int chest = x1;
+						x1 = z1;
+						z1 = chest;
 					}
 
 					if (i != -3 && i != 3 || k != -2 && k != 2) {
 						if (j < 3) {
 							if (i != -3 && i != 3 && k != -2 && (k != 2 || i == 0 && j <= 0)) {
 								if (i == -2 && j == 0 && k == 0) {
-									this.world.setBlock(x + a, y + b, z + c, Block.chestPlanksOak.id);
-									this.world.setBlockMetadataWithNotify(x + a, y + b, z + c, (direction + 2) % 4);
-									TileEntityChest tileEntityChest12 = (TileEntityChest) this.world.getBlockTileEntity(x + a, y + b, z + c);
+									this.world.setBlock(x0 + x1, y0 + y1, z0 + z1, Block.chestPlanksOak.id);
+									this.world.setBlockMetadataWithNotify(x0 + x1, y0 + y1, z0 + z1, (direction + 2) % 4);
+									TileEntityChest tileEntityChest12 = (TileEntityChest) this.world.getBlockTileEntity(x0 + x1, y0 + y1, z0 + z1);
 									tileEntityChest12.setInventorySlotContents(0, new ItemStack(Item.stick, 16, 0));
 								} else if (i == 0 && j == 0 && k == -1) {
-									this.world.setBlock(x + a, y + b, z + c, Block.stairsPlanksOak.id);
-									this.world.setBlockMetadataWithNotify(x + a, y + b, z + c, (direction + 2 + (direction % 2 == 0 ? 1 : -1)) % 4);
+									this.placeWoodStairs(x0 + x1, y0 + y1, z0 + z1, (direction + 2 + (direction % 2 == 0 ? 1 : -1)) % 4);
 								} else if (i == 1 && j == 1 && k == -1) {
-									this.world.setBlock(x + a, y + b, z + c, Block.stairsPlanksOak.id);
-									this.world.setBlockMetadataWithNotify(x + a, y + b, z + c, (direction + 2 + (direction % 2 == 0 ? 1 : -1)) % 4);
+									this.placeWoodStairs(x0 + x1, y0 + y1, z0 + z1, (direction + 2 + (direction % 2 == 0 ? 1 : -1)) % 4);
 								} else if (i == 2 && j == 1 && k == -1) {
-									this.world.setBlockWithNotify(x + a, y + b, z + c, Block.planksOak.id);
+									this.placeWoodBlock(x0 + x1, y0 + y1, z0 + z1);
 								} else if (i == 2 && j == 2 && k == 0) {
-									this.world.setBlock(x + a, y + b, z + c, Block.stairsPlanksOak.id);
-									this.world.setBlockMetadataWithNotify(x + a, y + b, z + c, (direction + (direction % 2 == 0 ? 1 : -1)) % 4);
+									this.placeWoodStairs(x0 + x1, y0 + y1, z0 + z1, (direction + (direction % 2 == 0 ? 1 : -1)) % 4);
 								} else if (i == 0 && j == 2 && k == -1) {
-									this.world.setBlockWithNotify(x + a, y + b, z + c, 0);
+									this.world.setBlockWithNotify(x0 + x1, y0 + y1, z0 + z1, 0);
 								} else if (i == 1 && j == 2 && k == -1) {
-									this.world.setBlockWithNotify(x + a, y + b, z + c, 0);
+									this.world.setBlockWithNotify(x0 + x1, y0 + y1, z0 + z1, 0);
 								} else if (i == 2 && j == 2 && k == -1) {
-									this.world.setBlockWithNotify(x + a, y + b, z + c, 0);
+									this.world.setBlockWithNotify(x0 + x1, y0 + y1, z0 + z1, 0);
 								} else if (j == 2) {
-									this.world.setBlockWithNotify(x + a, y + b, z + c, Block.planksOak.id);
+									this.placeWoodBlock(x0 + x1, y0 + y1, z0 + z1);
 								} else {
-									this.world.setBlockWithNotify(x + a, y + b, z + c, 0);
+									this.world.setBlockWithNotify(x0 + x1, y0 + y1, z0 + z1, 0);
 								}
 							} else {
-								this.world.setBlockWithNotify(x + a, y + b, z + c, Block.planksOak.id);
+								this.placeWoodBlock(x0 + x1, y0 + y1, z0 + z1);
 							}
 						} else if (j == 3) {
 							if (i != -3 && i != 3 && k != -2 && (k != 2 || i == 0 && j <= 0)) {
-								this.world.setBlockWithNotify(x + a, y + b, z + c, 0);
+								this.world.setBlockWithNotify(x0 + x1, y0 + y1, z0 + z1, 0);
 							} else if (i != -2 && i != 0 && i != 2 && k != 0) {
-								this.world.setBlockWithNotify(x + a, y + b, z + c, Block.stairsPlanksOak.id);
-								this.world.setBlockMetadataWithNotify(x + a, y + b, z + c, 2);
+								this.placeWoodStairs(x0 + x1, y0 + y1, z0 + z1, 2);
 							} else {
-								this.world.setBlockWithNotify(x + a, y + b, z + c, Block.planksOak.id);
+								this.placeWoodBlock(x0 + x1, y0 + y1, z0 + z1);
 							}
 						}
 					}
