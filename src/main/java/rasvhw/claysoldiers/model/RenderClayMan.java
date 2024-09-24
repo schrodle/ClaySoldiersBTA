@@ -19,8 +19,8 @@ public class RenderClayMan extends LivingRenderer<EntityClayMan> {
         this.mc1.hasStick = entityClayMan.hasStick();
         this.mc1.hasSpecks = entityClayMan.isGunPowdered();
         this.mc1.hasArmor = entityClayMan.hasArmor();
-        this.mc1.hasCrown = entityClayMan.hasCrown();
-        this.mc1.isPadded = entityClayMan.isPadded();
+        this.mc1.hasCrown = entityClayMan.isKing();
+        this.mc1.isPadded = entityClayMan.isArmorPadded();
         this.mc1.isSharpened = entityClayMan.isStickSharp();
         this.mc1.isGooey = entityClayMan.isGooey();
         this.mc1.hasLogs = entityClayMan.hasLogs();

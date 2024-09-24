@@ -613,7 +613,7 @@ public class EntityClayMan extends EntityAnimal {
 									if (this.getArmorPoints() > 0) {
 										this.setArmorPadded(true);
 
-										for (i17 = 0; i17 < 4; ++i17) {
+										for (int i = 0; i < 4; ++i) {
 											d24 = this.x + (double) (this.random.nextFloat() - this.random.nextFloat()) * 0.125D;
 											d30 = this.bb.minY + 0.125D + (double) (this.random.nextFloat() - this.random.nextFloat()) * 0.25D;
 											d36 = this.z + (double) (this.random.nextFloat() - this.random.nextFloat()) * 0.125D;
@@ -809,15 +809,15 @@ public class EntityClayMan extends EntityAnimal {
 		if (te instanceof TileEntityChest) {
 			TileEntityChest chest = (TileEntityChest) te;
 
-			for (int q = 0; q < chest.getSizeInventory(); ++q) {
-				if (chest.getStackInSlot(q) != null) {
-					ItemStack stack = chest.getStackInSlot(q);
+			for (int chestSlotIndex = 0; chestSlotIndex < chest.getSizeInventory(); ++chestSlotIndex) {
+				if (chest.getStackInSlot(chestSlotIndex) != null) {
+					ItemStack stack = chest.getStackInSlot(chestSlotIndex);
 					if (stack.stackSize > 0) {
 						if (this.getStickPoints() <= 0 && stack.itemID == Item.stick.id) {
 							if (arrived) {
 								this.setStickPoints(15);
 								this.setStickSharp(false);
-								this.gotcha(chest, q);
+								this.gotcha(chest, chestSlotIndex);
 							}
 
 							return true;
@@ -827,7 +827,7 @@ public class EntityClayMan extends EntityAnimal {
 							if (arrived) {
 								this.setArmorPoints(15);
 								this.setArmorPadded(false);
-								this.gotcha(chest, q);
+								this.gotcha(chest, chestSlotIndex);
 							}
 
 							return true;
@@ -836,7 +836,7 @@ public class EntityClayMan extends EntityAnimal {
 						if (this.getRocks() <= 0 && stack.itemID == Block.gravel.id) {
 							if (arrived) {
 								this.setRocks(15);
-								this.gotcha(chest, q);
+								this.gotcha(chest, chestSlotIndex);
 							}
 
 							return true;
@@ -845,7 +845,7 @@ public class EntityClayMan extends EntityAnimal {
 						if (!this.isGlowing() && stack.itemID == Item.dustGlowstone.id) {
 							if (arrived) {
 								this.setGlowing(true);
-								this.gotcha(chest, q);
+								this.gotcha(chest, chestSlotIndex);
 							}
 
 							return true;
@@ -869,7 +869,7 @@ public class EntityClayMan extends EntityAnimal {
 							if (!alliedKingExists) {
 								if (arrived) {
 									this.setIsKing(true);
-									this.gotcha(chest, q);
+									this.gotcha(chest, chestSlotIndex);
 								}
 
 								return true;
@@ -878,7 +878,7 @@ public class EntityClayMan extends EntityAnimal {
 							if (!this.isGunPowdered() && stack.itemID == Item.sulphur.id) {
 								if (arrived) {
 									this.setGunPowdered(true);
-									this.gotcha(chest, q);
+									this.gotcha(chest, chestSlotIndex);
 								}
 
 								return true;
@@ -887,48 +887,48 @@ public class EntityClayMan extends EntityAnimal {
 							if (this.getSugarTime() <= 0 && stack.itemID == Item.dustSugar.id) {
 								if (arrived) {
 									this.setSugarTime(1200);
-									this.gotcha(chest, q);
+									this.gotcha(chest, chestSlotIndex);
 								}
 
 								return true;
 							}
 
-							if (this.getFoodLeft() <= 0 && stack.getItem() != null && stack.getItem() instanceof ItemFood) {
+							if (this.getFoodLeft() <= 0 && stack.getItem() instanceof ItemFood) {
 								if (arrived) {
 									this.setFoodLeft(4);
-									this.gotcha(chest, q);
+									this.gotcha(chest, chestSlotIndex);
 								}
 
 								return true;
 							}
-
+							//Pick up clay
 							if (this.getResPoints() <= 0 && stack.itemID == Item.clay.id) {
 								if (arrived) {
 									this.setResPoints(4);
-									this.gotcha(chest, q);
+									this.gotcha(chest, chestSlotIndex);
 								}
 
 								return true;
 							}
-
+							//Pick up goo
 							if (this.getGooStock() <= 0 && stack.itemID == Item.slimeball.id) {
 								if (arrived) {
 									this.setGooStock(2);
-									this.gotcha(chest, q);
+									this.gotcha(chest, chestSlotIndex);
 								}
 
 								return true;
 							}
-
+							//Pick up redstone smokes
 							if (this.getSmokeStock() <= 0 && stack.itemID == Item.dustRedstone.id) {
 								if (arrived) {
 									this.setSmokeStock(2);
-									this.gotcha(chest, q);
+									this.gotcha(chest, chestSlotIndex);
 								}
 
 								return true;
 							}
-
+							//Pick up logs
 							if (stack.itemID == Block.planksOak.id && !this.isPassenger() || stack.itemID == Block.planksOakPainted.id && !this.isPassenger()) {
 								byte b19 = 0;
 								if (this.getLogs() < 20 && stack.stackSize >= 5) {
@@ -938,7 +938,7 @@ public class EntityClayMan extends EntityAnimal {
 								if (arrived && b19 > 0) {
 									this.world.playSoundAtEntity(null, this, "random.pop", 0.2F, ((this.random.nextFloat() - this.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 									this.setLogs(this.getLogs() + 5);
-									chest.decrStackSize(q, 5);
+									chest.decrStackSize(chestSlotIndex, 5);
 								}
 
 								return b19 > 0 || arrived;
@@ -948,6 +948,7 @@ public class EntityClayMan extends EntityAnimal {
 							double b1;
 							int i18;
 							double d22;
+							//Sharpen equippped stick
 							if (this.getStickPoints() > 0 && !this.isStickSharp() && stack.itemID == Item.flint.id) {
 								if (arrived) {
 									this.setStickSharp(true);
@@ -966,7 +967,7 @@ public class EntityClayMan extends EntityAnimal {
 
 								return true;
 							}
-
+							//Pick up armor padding
 							if (this.getArmorPoints() > 0 && !this.isArmorPadded() && stack.itemID == Block.wool.id) {
 								if (arrived) {
 									this.setArmorPadded(true);
@@ -989,12 +990,12 @@ public class EntityClayMan extends EntityAnimal {
 							if (!this.isHeavyCore() && this.vehicle == null && stack.itemID == Item.ingotIron.id) {
 								if (arrived) {
 									this.setHeavyCore(true);
-									this.gotcha(chest, q);
+									this.gotcha(chest, chestSlotIndex);
 								}
 
 								return true;
 							}
-
+							//Find a target to resurrect
 							if (this.getResPoints() > 0 && stack.getItem() != null && stack.getItem() instanceof ItemClayMan) {
 								ItemClayMan resurrectionTarget = (ItemClayMan) stack.getItem();
 								if (resurrectionTarget.clayTeam == this.getClayTeam()) {
@@ -1016,7 +1017,7 @@ public class EntityClayMan extends EntityAnimal {
 										double c = this.z + (double) (this.random.nextFloat() - this.random.nextFloat()) * 0.125D;
 										EntityClayMan resurrectedClayMan = new EntityClayMan(this.world, d20, b, c, this.getClayTeam());
 										this.world.entityJoinedWorld(resurrectedClayMan);
-										this.gotcha(chest, q);
+										this.gotcha(chest, chestSlotIndex);
 										this.setResPoints(this.getResPoints() - 1);
 									}
 
@@ -1061,8 +1062,7 @@ public class EntityClayMan extends EntityAnimal {
 			}
 
 			if (!flag) {
-				double d10 = (double) broad;
-				List<Entity> list11 = this.world.getEntitiesWithinAABBExcludingEntity(this, this.bb.expand(d10, d10, d10));
+				List<Entity> list11 = this.world.getEntitiesWithinAABBExcludingEntity(this, this.bb.expand((double) broad, (double) broad, (double) broad));
 				if (!list11.isEmpty()) {
 					flag = true;
 				}
@@ -1085,18 +1085,18 @@ public class EntityClayMan extends EntityAnimal {
 		this.spawnAtLocation(Block.planksOak.id, this.getLogs());
 		this.setLogs(0);
 	}
-
+	//10 planks, 12 plank stairs. 5 planks to build. 5 oak logs equates to 20 planks.
 	public void buildHouseOne() {
 		int x = MathHelper.floor_double(this.x + 0.5D);
 		int y = MathHelper.floor_double(this.bb.minY);
 		int z = MathHelper.floor_double(this.z + 0.5D);
 		int direction = this.random.nextInt(4);
 
-		for (int j = 0; j < 3; ++j) {
+		for (int j = 0; j < 3; ++j) { //3 tall?
 			int b = j;
 
-			for (int i = -1; i < 3; ++i) {
-				for (int k = -1; k < 2; ++k) {
+			for (int i = -1; i < 3; ++i) { //4 wide?
+				for (int k = -1; k < 2; ++k) { //3 long?
 					int a = i;
 					int c = k;
 					if (direction % 2 == 0) {
@@ -1146,17 +1146,18 @@ public class EntityClayMan extends EntityAnimal {
 		this.setLogs(this.getLogs() - 5);
 	}
 
+	//32 planks, 12 plank stairs. 10 planks for a clayman to build. 10 oak logs equates to 40 planks
 	public void buildHouseTwo() {
 		int x = MathHelper.floor_double(this.x);
 		int y = MathHelper.floor_double(this.bb.minY);
 		int z = MathHelper.floor_double(this.z);
 		int direction = this.random.nextInt(4);
 
-		for (int j = 0; j < 3; ++j) {
+		for (int j = 0; j < 3; ++j) { //3 tall?
 			int b = j;
 
-			for (int i = -2; i < 3; ++i) {
-				for (int k = -2; k < 3; ++k) {
+			for (int i = -2; i < 3; ++i) {  //5 wide?
+				for (int k = -2; k < 3; ++k) {//5 long?
 					int a = i;
 					int c = k;
 					if (direction % 2 == 0) {
@@ -1204,16 +1205,17 @@ public class EntityClayMan extends EntityAnimal {
 		this.setLogs(this.getLogs() - 10);
 	}
 
+	//67 planks, 11 plank stairs, one chest, and 16 sticks. 15 planks to for a clayman to build. 15 oak logs equates to 60 planks - which is far more reasonable
 	public void buildHouseThree() {
 		int x = MathHelper.floor_double(this.x);
 		int y = MathHelper.floor_double(this.bb.minY);
 		int z = MathHelper.floor_double(this.z);
 		int direction = this.random.nextInt(4);
 
-		for (int j = 0; j < 4; ++j) {
+		for (int j = 0; j < 4; ++j) { //4 tall
 			int b = j;
 
-			for (int i = -3; i < 4; ++i) {
+			for (int i = -3; i < 4; ++i) { //7 wide?
 				for (int k = -2; k < 3; ++k) {
 					int a = i;
 					int c = k;
@@ -1496,9 +1498,6 @@ public class EntityClayMan extends EntityAnimal {
 		return this.entityData.getInt(15);
 	}
 
-	public boolean hasCrown() {
-		return this.isKing();
-	}
 
 	public boolean isGlowing() {
 		byte b = this.entityData.getByte(GUNPOWDERED_KING_GLOWING_PADDED_HEAVY_SHARP_DATA);
@@ -1514,10 +1513,6 @@ public class EntityClayMan extends EntityAnimal {
 	public boolean isStickSharp() {
 		byte b = this.entityData.getByte(GUNPOWDERED_KING_GLOWING_PADDED_HEAVY_SHARP_DATA);
 		return extractValueAtPosition(b, SHARP_BIT);
-	}
-
-	public boolean isPadded() {
-		return this.isArmorPadded();
 	}
 
 	public boolean isGooey() {
